@@ -1,15 +1,129 @@
-.container { padding: 0 0 120rpx; }
-.hero { background: linear-gradient(135deg, #52C41A 0%, #95DE64 100%); padding: 60rpx 40rpx 80rpx; text-align: center; color: #fff; }
-.hero-emoji { font-size: 80rpx; margin-bottom: 16rpx; }
-.hero-title { font-size: 48rpx; font-weight: 700; margin-bottom: 8rpx; }
-.hero-sub { font-size: 26rpx; opacity: 0.85; }
-.section-title { font-size: 28rpx; font-weight: 700; color: var(--color-text-sub); padding: 32rpx 32rpx 16rpx; text-transform: uppercase; letter-spacing: 2rpx; }
-.menu-card { display: flex; align-items: center; background: #fff; margin: 0 24rpx 16rpx; border-radius: 20rpx; padding: 28rpx 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06); }
-.menu-icon { font-size: 48rpx; margin-right: 20rpx; }
-.menu-info { flex: 1; }
-.menu-name { font-size: 30rpx; font-weight: 600; margin-bottom: 6rpx; }
-.menu-desc { font-size: 24rpx; color: var(--color-text-sub); }
-.menu-arrow { font-size: 40rpx; color: #ccc; }
-.guide { margin: 8rpx 24rpx 0; border-radius: 20rpx; padding: 28rpx 24rpx; background: var(--color-primary-light); }
-.guide-title { font-size: 28rpx; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 16rpx; }
-.guide-step { font-size: 26rpx; color: var(--color-text); padding: 6rpx 0; }
+/* pages/home/home.wxss */
+.container {
+  padding: 0 0 140rpx;
+}
+
+/* 紧凑标题栏 */
+.hero {
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  padding: 40rpx 40rpx;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 2rpx;
+}
+
+/* 区块标题 */
+.section-title {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: var(--color-text-sub);
+  padding: 36rpx 32rpx 16rpx;
+  text-transform: uppercase;
+  letter-spacing: 3rpx;
+}
+
+/* 功能卡片 */
+.menu-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  margin: 0 24rpx 20rpx;
+  border-radius: var(--radius-card);
+  padding: 28rpx 24rpx 28rpx 0;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* 左侧彩色竖条 */
+.card-accent {
+  width: 8rpx;
+  height: 80rpx;
+  border-radius: 0 4rpx 4rpx 0;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+/* icon 圆形色块 */
+.menu-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.menu-icon-emoji {
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+.menu-info {
+  flex: 1;
+}
+
+.menu-name {
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-bottom: 6rpx;
+  color: var(--color-text);
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: var(--color-text-sub);
+}
+
+.menu-arrow {
+  font-size: 44rpx;
+  color: #ccc;
+  line-height: 1;
+}
+
+/* 使用步骤 */
+.guide {
+  margin: 8rpx 24rpx 0;
+  border-radius: var(--radius-card);
+  padding: 32rpx 28rpx;
+  background: #FFF9E6;
+}
+
+.guide-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--color-orange);
+  margin-bottom: 20rpx;
+}
+
+.guide-step {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 0;
+}
+
+.step-badge {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--color-orange);
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 26rpx;
+  color: var(--color-text);
+}
