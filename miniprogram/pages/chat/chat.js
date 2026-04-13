@@ -32,10 +32,21 @@ function buildChildContext() {
 }
 
 Page({
-  data: { hasAssessment: false, childContext: null, faqs: [], messages: [], inputMsg: '', thinking: false, scrollToId: '', msgCounter: 0 },
+  data: { hasAssessment: false, childContext: null, faqs: [], messages: [], inputMsg: '', thinking: false, scrollToId: '', msgCounter: 0, remain: 5 },
 
   onLoad() {
     this.refreshContext()
+    this.loadQuota()
+  },
+
+  async loadQuota() {
+    try {
+      const res = await wx.cloud.callFunction({ name: 'chat', data: { action: 'getQuota' } })
+      const remain = res.result?.data?.remain ?? 5
+      this.setData({ remain })
+    } catch {
+      this.setData({ remain: 5 })
+    }
   },
 
   onShow() {
@@ -60,6 +71,10 @@ Page({
   },
 
   async sendMessage() {
+    if (this.data.remain <= 0) {
+      wx.showToast({ title: '本月提问次数已用完', icon: 'none' })
+      return
+    }
     const text = this.data.inputMsg.trim()
     if (!text) return
     const userMsg = { id: this.data.msgCounter, role: 'user', content: text }
@@ -68,9 +83,15 @@ Page({
     this.setData({ messages: [...this.data.messages, userMsg], inputMsg: '', thinking: true, msgCounter: newCounter, scrollToId: `msg-${userMsg.id}` })
     try {
       const res = await wx.cloud.callFunction({ name: 'chat', data: { message: text, history, childContext: this.data.childContext } })
+      if (res.result?.code === 429) {
+        const aiMsg = { id: newCounter, role: 'ai', content: '本月提问次数已用完，下月自动重置。' }
+        this.setData({ messages: [...this.data.messages, aiMsg], remain: 0 })
+        return
+      }
       const reply = res.result.data?.reply || '暂时无法回答，请稍后再试。'
+      const remain = res.result.data?.remain ?? Math.max(0, this.data.remain - 1)
       const aiMsg = { id: newCounter, role: 'ai', content: reply }
-      this.setData({ messages: [...this.data.messages, aiMsg], msgCounter: newCounter + 1, scrollToId: `msg-${aiMsg.id}` })
+      this.setData({ messages: [...this.data.messages, aiMsg], msgCounter: newCounter + 1, scrollToId: `msg-${aiMsg.id}`, remain })
     } catch (err) {
       const aiMsg = { id: newCounter, role: 'ai', content: '网络异常，请检查连接后重试。' }
       this.setData({ messages: [...this.data.messages, aiMsg] })

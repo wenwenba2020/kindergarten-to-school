@@ -196,9 +196,46 @@ function buildSystemPrompt(childContext) {
 ${KNOWLEDGE_BASE}`
 }
 
+const QUOTA_LIMIT = 5
+
+async function getRemainCount(openid) {
+  const db = cloud.database()
+  const month = new Date().toISOString().slice(0, 7) // "2026-04"
+  const res = await db.collection('chat_quota').where({ openid, month }).get()
+  const used = res.data[0]?.count || 0
+  return Math.max(0, QUOTA_LIMIT - used)
+}
+
+async function incrementCount(openid) {
+  const db = cloud.database()
+  const month = new Date().toISOString().slice(0, 7)
+  const res = await db.collection('chat_quota').where({ openid, month }).get()
+  if (res.data.length === 0) {
+    await db.collection('chat_quota').add({ data: { openid, month, count: 1 } })
+  } else {
+    await db.collection('chat_quota').doc(res.data[0]._id).update({
+      data: { count: db.command.inc(1) }
+    })
+  }
+}
+
 exports.main = async (event) => {
-  const { message, history = [], childContext = null } = event
+  const { OPENID } = cloud.getWXContext()
+  const { message, history = [], childContext = null, action } = event
+
+  // getQuota action：前端查询剩余次数
+  if (action === 'getQuota') {
+    const remain = await getRemainCount(OPENID)
+    return { code: 0, data: { remain } }
+  }
+
   if (!message) return { code: 400, message: '缺少 message 参数' }
+
+  // 检查限额
+  const remain = await getRemainCount(OPENID)
+  if (remain <= 0) {
+    return { code: 429, message: '本月提问次数已用完，下月自动重置', data: { remain: 0 } }
+  }
 
   try {
     if (!SILICONFLOW_API_KEY) throw new Error('未配置 API Key')
@@ -232,10 +269,14 @@ exports.main = async (event) => {
     const reply = data?.choices?.[0]?.message?.content
     if (!reply) throw new Error(`Unexpected API response: ${JSON.stringify(data).slice(0, 200)}`)
 
-    return { code: 0, data: { reply } }
+    // 成功后扣减次数，并在返回值中携带最新 remain
+    await incrementCount(OPENID)
+    return { code: 0, data: { reply, remain: remain - 1 } }
   } catch (err) {
     console.error('chat error:', err.message)
     const reply = fallbackAnswer(message)
-    return { code: 0, data: { reply }, fallback: true }
+    // fallback 时也扣减次数（已消耗了一次交互）
+    await incrementCount(OPENID)
+    return { code: 0, data: { reply, remain: remain - 1 }, fallback: true }
   }
 }

@@ -15,6 +15,13 @@
 .input-bar { display: flex; align-items: center; gap: 16rpx; padding: 16rpx 24rpx 48rpx; background: #fff; border-top: 1rpx solid var(--color-border); flex-shrink: 0; }
 .input-field { flex: 1; }
 
+/* Quota bar */
+.quota-bar { display: flex; align-items: center; gap: 8rpx; padding: 12rpx 24rpx; background: var(--color-yellow-light); border-bottom: 1rpx solid var(--color-border); flex-shrink: 0; }
+.quota-icon { font-size: 28rpx; }
+.quota-text { font-size: 24rpx; color: var(--color-text-sub); }
+.quota-num { color: var(--color-orange); font-weight: 700; }
+.quota-text--empty { color: #e57373; }
+
 /* Gate card */
 .gate-card { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 80rpx 48rpx; text-align: center; }
 .gate-icon { font-size: 96rpx; margin-bottom: 32rpx; }
