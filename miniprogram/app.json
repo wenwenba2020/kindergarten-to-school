@@ -14,19 +14,27 @@
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
       },
       {
         "pagePath": "pages/assessment/assessment",
-        "text": "评估"
+        "text": "评估",
+        "iconPath": "images/tab-assess.png",
+        "selectedIconPath": "images/tab-assess-active.png"
       },
       {
         "pagePath": "pages/plan/plan",
-        "text": "计划"
+        "text": "计划",
+        "iconPath": "images/tab-plan.png",
+        "selectedIconPath": "images/tab-plan-active.png"
       },
       {
         "pagePath": "pages/chat/chat",
-        "text": "问答"
+        "text": "问答",
+        "iconPath": "images/tab-chat.png",
+        "selectedIconPath": "images/tab-chat-active.png"
       }
     ]
   },
