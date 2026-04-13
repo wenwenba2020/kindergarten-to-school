@@ -1,0 +1,30 @@
+{
+  "envId": "wenwen2code-4gxuthj048ae0fb0",
+  "functionRoot": "cloudfunctions",
+  "functions": [
+    {
+      "name": "assessment",
+      "runtime": "Nodejs20.19",
+      "timeout": 30,
+      "installDependency": true
+    },
+    {
+      "name": "generatePlan",
+      "runtime": "Nodejs20.19",
+      "timeout": 60,
+      "installDependency": true
+    },
+    {
+      "name": "chat",
+      "runtime": "Nodejs20.19",
+      "timeout": 60,
+      "installDependency": true
+    },
+    {
+      "name": "analyzeDeep",
+      "runtime": "Nodejs20.19",
+      "timeout": 90,
+      "installDependency": true
+    }
+  ]
+}
