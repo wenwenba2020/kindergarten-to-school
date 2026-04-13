@@ -1,9 +1,10 @@
 Page({
-  data: { plan: null, activeTab: 0, currentWeek: 1, expandedWeek: null },
+  data: { hasAssessment: false, plan: null, activeTab: 0, currentWeek: 1, expandedWeek: null },
 
   onShow() {
-    const plan = wx.getStorageSync('lastPlan')
-    if (plan) this.setData({ plan })
+    const hasAssessment = !!wx.getStorageSync('lastAssessmentResult')
+    const plan = wx.getStorageSync('lastPlan') || null
+    this.setData({ hasAssessment, plan: hasAssessment ? plan : null })
   },
 
   onTabChange(e) { this.setData({ activeTab: e.detail.index }) },

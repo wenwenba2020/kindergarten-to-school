@@ -1,7 +1,16 @@
-<view wx:if="{{!plan}}" class="empty">
+<!-- 未评估引导卡 -->
+<view wx:if="{{!hasAssessment}}" class="gate-card">
+  <text class="gate-icon">📋</text>
+  <text class="gate-title">请先完成能力评估</text>
+  <text class="gate-desc">完成评估后，系统将根据孩子的具体情况生成个性化计划</text>
+  <view class="gate-btn" bindtap="goAssessment">去评估</view>
+</view>
+
+<!-- 有评估但尚未生成计划 -->
+<view wx:elif="{{!plan}}" class="empty">
   <view class="empty-icon">📅</view>
   <view class="empty-text">还没有计划</view>
-  <view class="empty-sub">完成能力评估后生成计划</view>
+  <view class="empty-sub">去结果页生成你的个性化计划</view>
   <van-button type="primary" round custom-style="margin-top: 32rpx; width: 300rpx;" bindclick="goAssessment">
     去评估
   </van-button>
