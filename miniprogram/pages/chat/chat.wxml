@@ -1,1 +1,34 @@
-<view>问答</view>
+<view class="container">
+  <scroll-view scroll-x class="faq-scroll">
+    <view class="faq-wrap">
+      <view class="faq-tag" wx:for="{{faqs}}" wx:key="*this" bindtap="sendFaq" data-msg="{{item}}">{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <scroll-view scroll-y class="chat-scroll" scroll-into-view="{{scrollToId}}">
+    <view class="chat-list">
+      <view
+        class="bubble-wrap {{item.role === 'user' ? 'bubble-wrap--user' : 'bubble-wrap--ai'}}"
+        wx:for="{{messages}}"
+        wx:key="id"
+        id="msg-{{item.id}}"
+      >
+        <view class="avatar" wx:if="{{item.role === 'ai'}}">🌱</view>
+        <view class="bubble {{item.role === 'user' ? 'bubble--user' : 'bubble--ai'}}">{{item.content}}</view>
+        <view class="avatar-user" wx:if="{{item.role === 'user'}}">👤</view>
+      </view>
+
+      <view class="bubble-wrap bubble-wrap--ai" wx:if="{{thinking}}">
+        <view class="avatar">🌱</view>
+        <view class="bubble bubble--ai bubble--thinking">
+          <van-loading size="20px" color="#52C41A" /> 小桥正在思考...
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <van-field value="{{inputMsg}}" bind:change="onInput" placeholder="输入问题..." custom-class="input-field" />
+    <van-button type="primary" round size="small" bindclick="sendMessage" disabled="{{!inputMsg || thinking}}">发送</van-button>
+  </view>
+</view>
