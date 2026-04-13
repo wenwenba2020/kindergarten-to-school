@@ -9,25 +9,37 @@ const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1'
 const MODEL = 'Pro/deepseek-ai/DeepSeek-V3'
 
 async function callLLM(apiKey, systemPrompt, userPrompt) {
-  const resp = await fetch(`${SILICONFLOW_BASE_URL}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.7,
-      response_format: { type: 'json_object' },
-    }),
-  })
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 60000)
+  let resp
+  try {
+    resp = await fetch(`${SILICONFLOW_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.7,
+        response_format: { type: 'json_object' },
+      }),
+      signal: controller.signal,
+    })
+  } catch (err) {
+    clearTimeout(timer)
+    throw err
+  }
+  clearTimeout(timer)
   if (!resp.ok) throw new Error(`LLM API error: ${resp.status}`)
   const data = await resp.json()
-  return data.choices[0].message.content
+  const content = data?.choices?.[0]?.message?.content
+  if (!content) throw new Error(`Unexpected LLM response: ${JSON.stringify(data).slice(0, 200)}`)
+  return content
 }
 
 exports.main = async (event) => {
@@ -61,6 +73,9 @@ ${KNOWLEDGE_BASE}${hometownTip}`
     if (!apiKey) throw new Error('未配置 SILICONFLOW_API_KEY')
     const raw = await callLLM(apiKey, systemPrompt, userPrompt)
     const plan = typeof raw === 'string' ? JSON.parse(raw) : raw
+    if (!plan.weekly_goals || !plan.daily_activities) {
+      throw new Error('LLM response missing required fields')
+    }
     return { code: 0, data: plan }
   } catch (err) {
     console.error('generatePlan error:', err.message)
