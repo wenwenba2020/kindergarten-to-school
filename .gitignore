@@ -38,6 +38,7 @@ chroma_db/
 miniprogram/node_modules/
 miniprogram/miniprogram_npm/
 .superpowers/
+project.private.config.json
 
 # Cloud Functions
 cloudfunctions/*/node_modules/
