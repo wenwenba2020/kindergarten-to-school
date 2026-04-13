@@ -7,9 +7,9 @@
     "pages/chat/chat"
   ],
   "tabBar": {
-    "color": "#888888",
-    "selectedColor": "#52C41A",
-    "backgroundColor": "#ffffff",
+    "color": "#aaaaaa",
+    "selectedColor": "#FF8C42",
+    "backgroundColor": "#FFFDF5",
     "borderStyle": "white",
     "list": [
       {
