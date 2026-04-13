@@ -1,1 +1,90 @@
-<view>评估</view>
+<van-toast id="van-toast" />
+
+<view class="container">
+  <view class="progress-bar">
+    <view class="progress-label">已完成 {{doneCount}} / {{dimensions.length}}</view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{doneCount / dimensions.length * 100}}%"></view>
+    </view>
+  </view>
+
+  <view class="child-info card" wx:if="{{childName}}">
+    <text>🌱 正在评估：{{childName}}，{{childAge}} 岁</text>
+  </view>
+
+  <view class="dim-grid">
+    <view
+      class="dim-card {{item.done ? 'dim-card--done' : ''}} {{currentDim === index ? 'dim-card--active' : ''}}"
+      wx:for="{{dimensions}}"
+      wx:key="key"
+      bindtap="openPopup"
+      data-index="{{index}}"
+    >
+      <view class="dim-check" wx:if="{{item.done}}">✅</view>
+      <view class="dim-icon">{{item.icon}}</view>
+      <view class="dim-name">{{item.name}}</view>
+      <view class="dim-score" wx:if="{{item.done}}">
+        <text wx:for="{{item.rating}}" wx:key="*this">⭐</text>
+      </view>
+      <view class="dim-score dim-score--pending" wx:else>待评估</view>
+    </view>
+  </view>
+
+  <view class="bottom-btn">
+    <van-button
+      type="primary"
+      block
+      round
+      disabled="{{doneCount < dimensions.length}}"
+      bindclick="submitAssessment"
+      loading="{{submitting}}"
+    >
+      {{doneCount < dimensions.length ? '完成全部评估后查看结果' : '查看评估结果 →'}}
+    </van-button>
+  </view>
+</view>
+
+<van-popup
+  show="{{showPopup}}"
+  position="bottom"
+  round
+  bind:close="closePopup"
+  custom-style="padding: 40rpx 32rpx 80rpx;"
+>
+  <view wx:if="{{currentDimData}}">
+    <view class="popup-icon">{{currentDimData.icon}}</view>
+    <view class="popup-title">{{currentDimData.name}}</view>
+    <view class="popup-desc">{{currentDimData.desc}}</view>
+    <view class="popup-rate-label">
+      <text>需加强</text>
+      <text>非常棒</text>
+    </view>
+    <van-rate
+      value="{{currentRating}}"
+      bind:change="onRateChange"
+      size="40"
+      color="#52C41A"
+      void-color="#d9f7be"
+      count="5"
+    />
+    <van-button type="primary" block round custom-style="margin-top: 32rpx;" bindclick="confirmRating">
+      确认 ({{currentRating}} 分)
+    </van-button>
+  </view>
+</van-popup>
+
+<!-- 孩子信息弹窗（首次进入时展示） -->
+<van-popup
+  show="{{showChildSetup}}"
+  position="bottom"
+  round
+  custom-style="padding: 40rpx 32rpx 80rpx;"
+>
+  <view class="popup-title">先告诉我关于孩子的信息</view>
+  <van-field label="孩子姓名" value="{{form.name}}" bind:change="onFormChange" data-key="name" placeholder="请输入" />
+  <van-field label="年龄" value="{{form.age}}" bind:change="onFormChange" data-key="age" placeholder="如：5.5" type="digit" />
+  <van-field label="籍贯" value="{{form.hometown}}" bind:change="onFormChange" data-key="hometown" placeholder="如：浙江省杭州市" />
+  <van-button type="primary" block round custom-style="margin-top: 32rpx;" bindclick="saveChildInfo">
+    开始评估
+  </van-button>
+</van-popup>

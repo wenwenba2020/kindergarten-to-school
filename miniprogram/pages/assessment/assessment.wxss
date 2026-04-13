@@ -1,0 +1,21 @@
+.container { padding-bottom: 160rpx; }
+.progress-bar { padding: 24rpx 32rpx 16rpx; background: #fff; }
+.progress-label { font-size: 24rpx; color: var(--color-text-sub); margin-bottom: 12rpx; }
+.progress-track { height: 8rpx; background: var(--color-primary-mid); border-radius: 4rpx; }
+.progress-fill { height: 8rpx; background: var(--color-primary); border-radius: 4rpx; transition: width 0.3s; }
+.child-info { margin: 16rpx 24rpx 0; padding: 20rpx 24rpx; font-size: 26rpx; color: var(--color-primary-dark); }
+.dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20rpx; padding: 20rpx 24rpx; }
+.dim-card { background: #fff; border-radius: 20rpx; padding: 32rpx 20rpx; text-align: center; border: 3rpx solid var(--color-border); position: relative; transition: all 0.2s; }
+.dim-card--done { border-color: var(--color-primary); background: var(--color-primary-light); }
+.dim-card--active { box-shadow: 0 0 0 4rpx rgba(82,196,26,.3); }
+.dim-check { position: absolute; top: 12rpx; right: 16rpx; font-size: 24rpx; }
+.dim-icon { font-size: 56rpx; margin-bottom: 12rpx; }
+.dim-name { font-size: 26rpx; font-weight: 600; margin-bottom: 8rpx; }
+.dim-score { font-size: 22rpx; color: var(--color-primary); }
+.dim-score--pending { color: var(--color-text-sub); }
+.bottom-btn { position: fixed; bottom: 0; left: 0; right: 0; padding: 24rpx 32rpx 48rpx; background: #fff; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,.06); }
+.popup-icon { font-size: 72rpx; text-align: center; margin-bottom: 16rpx; }
+.popup-title { font-size: 34rpx; font-weight: 700; text-align: center; margin-bottom: 12rpx; }
+.popup-desc { font-size: 26rpx; color: var(--color-text-sub); text-align: center; margin-bottom: 32rpx; line-height: 1.6; }
+.popup-rate-label { display: flex; justify-content: space-between; font-size: 22rpx; color: var(--color-text-sub); margin-bottom: 16rpx; }
+van-rate { display: flex; justify-content: center; }

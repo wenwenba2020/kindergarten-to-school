@@ -1,1 +1,10 @@
-{"navigationBarTitleText": "能力评估"}
+{
+  "navigationBarTitleText": "能力评估",
+  "usingComponents": {
+    "van-popup": "@vant/weapp/popup/index",
+    "van-rate": "@vant/weapp/rate/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-field": "@vant/weapp/field/index"
+  }
+}
