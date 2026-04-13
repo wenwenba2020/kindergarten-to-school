@@ -1,1 +1,17 @@
-Page({})
+Page({
+  data: { plan: null, activeTab: 0, currentWeek: 1, expandedWeek: null },
+
+  onShow() {
+    const plan = wx.getStorageSync('lastPlan')
+    if (plan) this.setData({ plan })
+  },
+
+  onTabChange(e) { this.setData({ activeTab: e.detail.index }) },
+
+  toggleWeek(e) {
+    const index = e.currentTarget.dataset.index
+    this.setData({ expandedWeek: this.data.expandedWeek === index ? null : index })
+  },
+
+  goAssessment() { wx.switchTab({ url: '/pages/assessment/assessment' }) },
+})

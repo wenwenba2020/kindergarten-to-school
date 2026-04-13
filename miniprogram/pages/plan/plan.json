@@ -1,1 +1,8 @@
-{"navigationBarTitleText": "我的计划"}
+{
+  "navigationBarTitleText": "我的计划",
+  "usingComponents": {
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-button": "@vant/weapp/button/index"
+  }
+}

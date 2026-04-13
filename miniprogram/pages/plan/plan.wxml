@@ -1,1 +1,59 @@
-<view>计划</view>
+<view wx:if="{{!plan}}" class="empty">
+  <view class="empty-icon">📅</view>
+  <view class="empty-text">还没有计划</view>
+  <view class="empty-sub">完成能力评估后生成计划</view>
+  <van-button type="primary" round custom-style="margin-top: 32rpx; width: 300rpx;" bindclick="goAssessment">
+    去评估
+  </van-button>
+</view>
+
+<view wx:else class="container">
+  <van-tabs active="{{activeTab}}" bind:change="onTabChange" color="#52C41A" title-active-color="#52C41A">
+    <van-tab title="计划">
+      <view class="timeline">
+        <view
+          class="tl-item {{index < currentWeek ? 'tl-item--done' : ''}} {{index === currentWeek - 1 ? 'tl-item--current' : ''}}"
+          wx:for="{{plan.weekly_goals}}"
+          wx:key="index"
+          bindtap="toggleWeek"
+          data-index="{{index}}"
+        >
+          <view class="tl-line-wrap">
+            <view class="tl-dot"></view>
+            <view class="tl-line" wx:if="{{index < plan.weekly_goals.length - 1}}"></view>
+          </view>
+          <view class="tl-content">
+            <view class="tl-week">第 {{index + 1}} 周</view>
+            <view class="tl-goal">{{item}}</view>
+            <view class="tl-activities" wx:if="{{expandedWeek === index}}">
+              <view class="activity-item" wx:for="{{plan.daily_activities}}" wx:for-item="act" wx:key="time">
+                <view class="act-time">{{act.time}}</view>
+                <view class="act-detail">
+                  <view class="act-name">{{act.activity}}</view>
+                  <view class="act-goal">目标：{{act.goal}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-tab>
+
+    <van-tab title="资源">
+      <view class="res-list">
+        <view class="res-item" wx:for="{{plan.resources}}" wx:key="*this">
+          <text class="res-dot">📌</text><text>{{item}}</text>
+        </view>
+      </view>
+    </van-tab>
+
+    <van-tab title="家长贴士">
+      <view class="tips-list">
+        <view class="tip-item" wx:for="{{plan.parent_tips}}" wx:key="*this">
+          <text class="tip-num">{{index + 1}}</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </van-tab>
+  </van-tabs>
+</view>
