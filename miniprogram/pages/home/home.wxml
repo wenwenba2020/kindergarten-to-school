@@ -2,6 +2,7 @@
   <!-- 紧凑标题栏 -->
   <view class="hero">
     <view class="hero-title">幼小衔接家长助手</view>
+    <view class="hero-brand">wenwenlab.com 出品</view>
   </view>
 
   <view class="section-title">开始探索</view>

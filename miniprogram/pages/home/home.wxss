@@ -17,6 +17,13 @@
   letter-spacing: 2rpx;
 }
 
+.hero-brand {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 8rpx;
+  letter-spacing: 1rpx;
+}
+
 /* 区块标题 */
 .section-title {
   font-size: 26rpx;
