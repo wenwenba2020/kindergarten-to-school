@@ -79,6 +79,6 @@ ${KNOWLEDGE_BASE}${hometownTip}`
     return { code: 0, data: plan }
   } catch (err) {
     console.error('generatePlan error:', err.message)
-    return { code: 0, data: getDefaultPlan(duration), fallback: true }
+    return { code: 0, data: getDefaultPlan(duration, assessmentResult?.areas_to_improve), fallback: true }
   }
 }
