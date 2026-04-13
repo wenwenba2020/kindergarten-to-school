@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/assessment/assessment",
+    "pages/result/result",
+    "pages/plan/plan",
+    "pages/chat/chat"
+  ],
+  "tabBar": {
+    "color": "#888888",
+    "selectedColor": "#52C41A",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/assessment/assessment",
+        "text": "评估"
+      },
+      {
+        "pagePath": "pages/plan/plan",
+        "text": "计划"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "问答"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#52C41A",
+    "navigationBarTitleText": "小桥",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-rate": "@vant/weapp/rate/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-tag": "@vant/weapp/tag/index"
+  },
+  "sitemapLocation": "sitemap.json"
+}

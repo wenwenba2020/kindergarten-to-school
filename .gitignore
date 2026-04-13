@@ -33,3 +33,8 @@ chroma_db/
 
 # Cache
 .cache/
+
+# WeChat Mini Program
+miniprogram/node_modules/
+miniprogram/miniprogram_npm/
+.superpowers/

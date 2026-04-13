@@ -1,0 +1,15 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "appid": "wx0bbf693ce9ce7f75",
+  "projectname": "kindergarten-to-school",
+  "libVersion": "2.25.0",
+  "description": "小桥 - 幼小衔接规划助手"
+}
