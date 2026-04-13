@@ -41,7 +41,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#4CAF50",
-    "navigationBarTitleText": "小桥",
+    "navigationBarTitleText": "",
     "navigationBarTextStyle": "white"
   },
   "usingComponents": {
