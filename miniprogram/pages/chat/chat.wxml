@@ -44,6 +44,8 @@
       </view>
     </scroll-view>
 
+    <view class="disclaimer-bar">⚠️ 回答由 AI 生成，仅供参考，不构成专业教育或医疗建议，请结合实际情况判断</view>
+
     <view class="input-bar">
       <van-field value="{{inputMsg}}" bind:input="onInput" placeholder="输入问题..." custom-class="input-field" />
       <van-button type="primary" round size="small" bindclick="sendMessage" disabled="{{!inputMsg || thinking || remain <= 0}}">发送</van-button>

@@ -12,6 +12,7 @@
 .bubble--ai { background: #fff; border-bottom-left-radius: 4rpx; color: var(--color-text); }
 .bubble--user { background: var(--color-primary); color: #fff; border-bottom-right-radius: 4rpx; }
 .bubble--thinking { display: flex; align-items: center; gap: 12rpx; color: var(--color-text-sub); }
+.disclaimer-bar { padding: 10rpx 24rpx; background: #FFF8E1; border-top: 1rpx solid #FFE082; font-size: 20rpx; color: #8D6E63; line-height: 1.6; flex-shrink: 0; }
 .input-bar { display: flex; align-items: center; gap: 16rpx; padding: 16rpx 24rpx 48rpx; background: #fff; border-top: 1rpx solid var(--color-border); flex-shrink: 0; }
 .input-field { flex: 1; }
 
