@@ -1,1 +1,39 @@
-<view>首页</view>
+<view class="container">
+  <view class="hero">
+    <view class="hero-emoji">🌱</view>
+    <view class="hero-title">小桥</view>
+    <view class="hero-sub">幼小衔接规划助手</view>
+  </view>
+  <view class="section-title">开始探索</view>
+  <view class="menu-card" bindtap="goAssessment">
+    <view class="menu-icon">📋</view>
+    <view class="menu-info">
+      <view class="menu-name">能力评估</view>
+      <view class="menu-desc">评估孩子8个维度发展水平</view>
+    </view>
+    <view class="menu-arrow">›</view>
+  </view>
+  <view class="menu-card" bindtap="goPlan">
+    <view class="menu-icon">📅</view>
+    <view class="menu-info">
+      <view class="menu-name">个性化计划</view>
+      <view class="menu-desc">AI 定制幼小衔接方案</view>
+    </view>
+    <view class="menu-arrow">›</view>
+  </view>
+  <view class="menu-card" bindtap="goChat">
+    <view class="menu-icon">💬</view>
+    <view class="menu-info">
+      <view class="menu-name">问答咨询</view>
+      <view class="menu-desc">随时解答入学疑问</view>
+    </view>
+    <view class="menu-arrow">›</view>
+  </view>
+  <view class="guide card">
+    <view class="guide-title">💡 使用步骤</view>
+    <view class="guide-step">1. 填写孩子基本信息</view>
+    <view class="guide-step">2. 完成 8 项能力评估</view>
+    <view class="guide-step">3. 生成个性化计划</view>
+    <view class="guide-step">4. 有问题随时咨询</view>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+.container { padding: 0 0 120rpx; }
+.hero { background: linear-gradient(135deg, #52C41A 0%, #95DE64 100%); padding: 60rpx 40rpx 80rpx; text-align: center; color: #fff; }
+.hero-emoji { font-size: 80rpx; margin-bottom: 16rpx; }
+.hero-title { font-size: 48rpx; font-weight: 700; margin-bottom: 8rpx; }
+.hero-sub { font-size: 26rpx; opacity: 0.85; }
+.section-title { font-size: 28rpx; font-weight: 700; color: var(--color-text-sub); padding: 32rpx 32rpx 16rpx; text-transform: uppercase; letter-spacing: 2rpx; }
+.menu-card { display: flex; align-items: center; background: #fff; margin: 0 24rpx 16rpx; border-radius: 20rpx; padding: 28rpx 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06); }
+.menu-icon { font-size: 48rpx; margin-right: 20rpx; }
+.menu-info { flex: 1; }
+.menu-name { font-size: 30rpx; font-weight: 600; margin-bottom: 6rpx; }
+.menu-desc { font-size: 24rpx; color: var(--color-text-sub); }
+.menu-arrow { font-size: 40rpx; color: #ccc; }
+.guide { margin: 8rpx 24rpx 0; border-radius: 20rpx; padding: 28rpx 24rpx; background: var(--color-primary-light); }
+.guide-title { font-size: 28rpx; font-weight: 700; color: var(--color-primary-dark); margin-bottom: 16rpx; }
+.guide-step { font-size: 26rpx; color: var(--color-text); padding: 6rpx 0; }
