@@ -18,4 +18,3 @@
 .popup-title { font-size: 34rpx; font-weight: 700; text-align: center; margin-bottom: 12rpx; }
 .popup-desc { font-size: 26rpx; color: var(--color-text-sub); text-align: center; margin-bottom: 32rpx; line-height: 1.6; }
 .popup-rate-label { display: flex; justify-content: space-between; font-size: 22rpx; color: var(--color-text-sub); margin-bottom: 16rpx; }
-van-rate { display: flex; justify-content: center; }

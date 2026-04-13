@@ -36,5 +36,5 @@ Page({
     }
   },
 
-  goBack() { wx.navigateBack() },
+  goBack() { wx.switchTab({ url: '/pages/assessment/assessment' }) },
 })

@@ -6,8 +6,8 @@ Page({
   onInput(e) { this.setData({ inputMsg: e.detail }) },
 
   sendFaq(e) {
-    this.setData({ inputMsg: e.currentTarget.dataset.msg })
-    this.sendMessage()
+    const msg = e.currentTarget.dataset.msg
+    this.setData({ inputMsg: msg }, () => this.sendMessage())
   },
 
   async sendMessage() {

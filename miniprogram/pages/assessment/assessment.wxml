@@ -81,9 +81,9 @@
   custom-style="padding: 40rpx 32rpx 80rpx;"
 >
   <view class="popup-title">先告诉我关于孩子的信息</view>
-  <van-field label="孩子姓名" value="{{form.name}}" bind:change="onFormChange" data-key="name" placeholder="请输入" />
-  <van-field label="年龄" value="{{form.age}}" bind:change="onFormChange" data-key="age" placeholder="如：5.5" type="digit" />
-  <van-field label="籍贯" value="{{form.hometown}}" bind:change="onFormChange" data-key="hometown" placeholder="如：浙江省杭州市" />
+  <van-field label="孩子姓名" value="{{form.name}}" bind:input="onFormChange" data-key="name" placeholder="请输入" />
+  <van-field label="年龄" value="{{form.age}}" bind:input="onFormChange" data-key="age" placeholder="如：5.5" type="digit" />
+  <van-field label="籍贯" value="{{form.hometown}}" bind:input="onFormChange" data-key="hometown" placeholder="如：浙江省杭州市" />
   <van-button type="primary" block round custom-style="margin-top: 32rpx;" bindclick="saveChildInfo">
     开始评估
   </van-button>

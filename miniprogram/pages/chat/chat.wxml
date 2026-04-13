@@ -28,7 +28,7 @@
   </scroll-view>
 
   <view class="input-bar">
-    <van-field value="{{inputMsg}}" bind:change="onInput" placeholder="输入问题..." custom-class="input-field" />
+    <van-field value="{{inputMsg}}" bind:input="onInput" placeholder="输入问题..." custom-class="input-field" />
     <van-button type="primary" round size="small" bindclick="sendMessage" disabled="{{!inputMsg || thinking}}">发送</van-button>
   </view>
 </view>

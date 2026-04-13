@@ -9,7 +9,7 @@ Page({
   onTabChange(e) { this.setData({ activeTab: e.detail.index }) },
 
   toggleWeek(e) {
-    const index = e.currentTarget.dataset.index
+    const index = +e.currentTarget.dataset.index  // coerce to number
     this.setData({ expandedWeek: this.data.expandedWeek === index ? null : index })
   },
 

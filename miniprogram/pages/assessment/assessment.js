@@ -1,5 +1,3 @@
-const Toast = require('@vant/weapp/toast/toast')
-
 const DIMENSIONS = [
   { key: 'listening', name: '倾听理解', icon: '👂', desc: '孩子能否听懂老师的指令和故事内容，理解日常对话？', scoreKeys: ['language.listening'] },
   { key: 'expression', name: '语言表达', icon: '🗣️', desc: '孩子能否清楚地说出自己的想法，讲述一件事情？', scoreKeys: ['language.expression'] },
@@ -49,12 +47,17 @@ Page({
   async saveChildInfo() {
     const { name, age, hometown } = this.data.form
     if (!name) return wx.showToast({ title: '请输入孩子姓名', icon: 'none' })
-    const child = { name, age: parseFloat(age) || 5.5, hometown }
-    const db = wx.cloud.database()
-    const res = await db.collection('children').add({ data: { ...child, createdAt: db.serverDate() } })
-    child._id = res._id
-    getApp().globalData.currentChild = child
-    this.setData({ showChildSetup: false, childName: name, childAge: child.age })
+    try {
+      const child = { name, age: parseFloat(age) || 5.5, hometown }
+      const db = wx.cloud.database()
+      const res = await db.collection('children').add({ data: { ...child, createdAt: db.serverDate() } })
+      child._id = res._id
+      getApp().globalData.currentChild = child
+      this.setData({ showChildSetup: false, childName: name, childAge: child.age })
+    } catch (err) {
+      wx.showToast({ title: '保存失败，请重试', icon: 'none' })
+      console.error('saveChildInfo error:', err)
+    }
   },
 
   openPopup(e) {
