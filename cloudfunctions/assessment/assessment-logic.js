@@ -45,7 +45,7 @@ function calculateAssessment(profile = {}) {
 
   addFeedback(score(math.counting ?? 3), strengths, areas_to_improve, recommendations,
     '计数能力较强', '计数能力', '通过实物点数练习，20以内手口一致点数')
-  addFeedback(score(math.operation?? 3), strengths, areas_to_improve, recommendations,
+  addFeedback(score(math.operation ?? 3), strengths, areas_to_improve, recommendations,
     '运算能力发展良好', '简单运算', '用实物游戏理解加减法含义')
   addFeedback(score(math.shapes   ?? 3), strengths, areas_to_improve, recommendations,
     '图形认知能力好', '图形认知', '通过积木、拼图认识基本几何图形')
