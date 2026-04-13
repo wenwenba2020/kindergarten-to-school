@@ -172,21 +172,39 @@ A:
 - 浙江省学前教育相关政策
 `
 
-const SYSTEM_PROMPT = `你是"小桥"——幼小衔接规划专家，专为5-6岁儿童家庭服务。
+function buildSystemPrompt(childContext) {
+  let personalBlock = ''
+  if (childContext) {
+    const { name, age, hometown, overall_level, strengths = [], areas_to_improve = [], weekly_goals = [] } = childContext
+    const goalsText = weekly_goals.length
+      ? '\n\n【当前计划目标】\n' + weekly_goals.map((g, i) => `第${i + 1}周：${g}`).join('\n')
+      : ''
+    personalBlock = `你正在为一个具体的孩子提供个性化指导：
+
+【孩子信息】
+姓名：${name || '孩子'}（${age || 5.5}岁${hometown ? `，${hometown}` : ''}）
+整体水平：${overall_level || '未知'}
+优势：${strengths.join('、') || '暂无'}
+需重点提升：${areas_to_improve.join('、') || '暂无'}${goalsText}
+
+回答时请结合以上孩子的具体情况，给出有针对性的建议。若家长问到计划中的具体活动，请结合计划目标解释如何执行。\n\n`
+  }
+  return `${personalBlock}你是"小桥"——幼小衔接规划专家，专为5-6岁儿童家庭服务。
 回答原则：温暖、专业、实用，给出具体可操作的建议，控制在200字以内。
 
 知识库参考：
 ${KNOWLEDGE_BASE}`
+}
 
 exports.main = async (event) => {
-  const { message, history = [] } = event
+  const { message, history = [], childContext = null } = event
   if (!message) return { code: 400, message: '缺少 message 参数' }
 
   try {
     if (!SILICONFLOW_API_KEY) throw new Error('未配置 API Key')
 
     const messages = [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: buildSystemPrompt(childContext) },
       ...history.slice(-6),  // keep last 6 history messages
       { role: 'user', content: message },
     ]
