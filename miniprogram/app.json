@@ -41,7 +41,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#4CAF50",
-    "navigationBarTitleText": "",
+    "navigationBarTitleText": "幼小衔接家长助手",
     "navigationBarTextStyle": "white"
   },
   "usingComponents": {
