@@ -31,3 +31,9 @@
 .res-item { display: flex; gap: 12rpx; font-size: 28rpx; line-height: 1.6; padding: 12rpx 0; border-bottom: 1rpx solid var(--color-border); }
 .tip-item { display: flex; gap: 12rpx; font-size: 28rpx; line-height: 1.6; padding: 12rpx 0; border-bottom: 1rpx solid var(--color-border); }
 .tip-num { background: var(--color-primary); color: #fff; border-radius: 50%; width: 40rpx; height: 40rpx; min-width: 40rpx; display: flex; align-items: center; justify-content: center; font-size: 22rpx; margin-top: 4rpx; }
+.res-entry { display: flex; align-items: center; gap: 20rpx; padding: 32rpx 24rpx; background: #fff; border-radius: 20rpx; margin: 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06); }
+.res-entry-icon { font-size: 56rpx; }
+.res-entry-info { flex: 1; }
+.res-entry-title { font-size: 30rpx; font-weight: 600; color: var(--color-text); }
+.res-entry-sub { font-size: 24rpx; color: var(--color-text-sub); margin-top: 6rpx; }
+.res-entry-arrow { font-size: 40rpx; color: var(--color-text-sub); }

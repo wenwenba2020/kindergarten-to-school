@@ -4,7 +4,9 @@
     "pages/assessment/assessment",
     "pages/result/result",
     "pages/plan/plan",
-    "pages/chat/chat"
+    "pages/chat/chat",
+    "pages/articles/articles",
+    "pages/webview/webview"
   ],
   "tabBar": {
     "color": "#aaaaaa",

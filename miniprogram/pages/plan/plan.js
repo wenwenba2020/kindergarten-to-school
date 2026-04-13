@@ -15,4 +15,8 @@ Page({
   },
 
   goAssessment() { wx.switchTab({ url: '/pages/assessment/assessment' }) },
+
+  goArticles() {
+    wx.navigateTo({ url: '/pages/articles/articles' })
+  },
 })

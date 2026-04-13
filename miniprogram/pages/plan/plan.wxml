@@ -49,10 +49,13 @@
     </van-tab>
 
     <van-tab title="资源">
-      <view class="res-list">
-        <view class="res-item" wx:for="{{plan.resources}}" wx:key="*this">
-          <text class="res-dot">📌</text><text>{{item}}</text>
+      <view class="res-entry" bindtap="goArticles">
+        <view class="res-entry-icon">📰</view>
+        <view class="res-entry-info">
+          <view class="res-entry-title">精选文章</view>
+          <view class="res-entry-sub">8篇权威媒体幼小衔接指南</view>
         </view>
+        <view class="res-entry-arrow">›</view>
       </view>
     </van-tab>
 
