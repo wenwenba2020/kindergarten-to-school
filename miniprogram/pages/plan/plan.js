@@ -16,7 +16,7 @@ Page({
 
   goAssessment() { wx.switchTab({ url: '/pages/assessment/assessment' }) },
 
-  goArticles() {
-    wx.navigateTo({ url: '/pages/articles/articles' })
+  showComingSoon() {
+    wx.showToast({ title: '开发中，敬请期待', icon: 'none' })
   },
 })

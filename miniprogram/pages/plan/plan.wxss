@@ -37,3 +37,4 @@
 .res-entry-title { font-size: 30rpx; font-weight: 600; color: var(--color-text); }
 .res-entry-sub { font-size: 24rpx; color: var(--color-text-sub); margin-top: 6rpx; }
 .res-entry-arrow { font-size: 40rpx; color: var(--color-text-sub); }
+.res-entry-tag { background: #f5f5f5; color: var(--color-text-sub); border-radius: 8rpx; padding: 6rpx 14rpx; font-size: 22rpx; white-space: nowrap; }

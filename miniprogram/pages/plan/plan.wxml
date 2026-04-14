@@ -49,13 +49,21 @@
     </van-tab>
 
     <van-tab title="资源">
-      <view class="res-entry" bindtap="goArticles">
-        <view class="res-entry-icon">📰</view>
+      <view class="res-entry" bindtap="showComingSoon">
+        <view class="res-entry-icon">🧩</view>
         <view class="res-entry-info">
-          <view class="res-entry-title">精选文章</view>
-          <view class="res-entry-sub">8篇权威媒体幼小衔接指南</view>
+          <view class="res-entry-title">计算思维入门</view>
+          <view class="res-entry-sub">培养逻辑推理与问题解决能力</view>
         </view>
-        <view class="res-entry-arrow">›</view>
+        <view class="res-entry-tag">即将上线</view>
+      </view>
+      <view class="res-entry" bindtap="showComingSoon">
+        <view class="res-entry-icon">💡</view>
+        <view class="res-entry-info">
+          <view class="res-entry-title">信息学入门</view>
+          <view class="res-entry-sub">适龄编程思维启蒙课程</view>
+        </view>
+        <view class="res-entry-tag">即将上线</view>
       </view>
     </van-tab>
 

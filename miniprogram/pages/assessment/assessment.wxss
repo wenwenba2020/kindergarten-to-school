@@ -3,7 +3,9 @@
 .progress-label { font-size: 24rpx; color: var(--color-text-sub); margin-bottom: 12rpx; }
 .progress-track { height: 8rpx; background: var(--color-primary-mid); border-radius: 4rpx; }
 .progress-fill { height: 8rpx; background: var(--color-primary); border-radius: 4rpx; transition: width 0.3s; }
-.child-info { margin: 16rpx 24rpx 0; padding: 20rpx 24rpx; font-size: 26rpx; color: var(--color-primary-dark); }
+.child-info { margin: 16rpx 24rpx 0; padding: 20rpx 24rpx; font-size: 26rpx; color: var(--color-primary-dark); display: flex; align-items: center; justify-content: space-between; }
+.child-info-text { flex: 1; }
+.child-info-edit { font-size: 24rpx; color: var(--color-primary); padding: 6rpx 16rpx; border: 1rpx solid var(--color-primary); border-radius: 24rpx; flex-shrink: 0; }
 .dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20rpx; padding: 20rpx 24rpx; }
 .dim-card { background: #fff; border-radius: 20rpx; padding: 32rpx 20rpx; text-align: center; border: 3rpx solid var(--color-border); position: relative; transition: all 0.2s; }
 .dim-card--done { border-color: var(--color-primary); background: var(--color-primary-light); }

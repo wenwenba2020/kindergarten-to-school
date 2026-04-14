@@ -38,7 +38,7 @@
         <view class="bubble-wrap bubble-wrap--ai" wx:if="{{thinking}}">
           <view class="avatar">🌱</view>
           <view class="bubble bubble--ai bubble--thinking">
-            <van-loading size="20px" color="#52C41A" /> 小桥正在思考...
+            <van-loading size="20px" color="#52C41A" /> 小苗正在思考...
           </view>
         </view>
       </view>

@@ -9,7 +9,8 @@
   </view>
 
   <view class="child-info card" wx:if="{{childName}}">
-    <text>🌱 正在评估：{{childName}}，{{childAge}} 岁</text>
+    <text class="child-info-text">🌱 正在评估：{{childName}}，{{childAgeDisplay}}</text>
+    <view class="child-info-edit" bindtap="editChildInfo">修改</view>
   </view>
 
   <view class="dim-grid">

@@ -1,3 +1,30 @@
+function parseChineseAge(input) {
+  if (!input) return 5.5
+  const s = String(input).trim()
+  // Pure number: "5" or "5.5"
+  if (/^\d+(\.\d+)?$/.test(s)) return parseFloat(s) || 5.5
+  // "5岁半"
+  const halfMatch = s.match(/^(\d+)\s*岁半/)
+  if (halfMatch) return parseInt(halfMatch[1]) + 0.5
+  // "5岁6个月"
+  const monthMatch = s.match(/^(\d+)\s*岁\s*(\d+)\s*个?月/)
+  if (monthMatch) return parseInt(monthMatch[1]) + parseInt(monthMatch[2]) / 12
+  // "5岁"
+  const yearMatch = s.match(/^(\d+)\s*岁/)
+  if (yearMatch) return parseInt(yearMatch[1])
+  return parseFloat(s) || 5.5
+}
+
+function formatAge(age) {
+  const n = parseFloat(age)
+  if (!n) return ''
+  if (n === Math.floor(n)) return `${n}岁`
+  const years = Math.floor(n)
+  const months = Math.round((n - years) * 12)
+  if (months === 6) return `${years}岁半`
+  return `${years}岁${months}个月`
+}
+
 const DIMENSIONS = [
   { key: 'listening', name: '倾听理解', icon: '👂', desc: '孩子能否听懂老师的指令和故事内容，理解日常对话？', scoreKeys: ['language.listening'] },
   { key: 'expression', name: '语言表达', icon: '🗣️', desc: '孩子能否清楚地说出自己的想法，讲述一件事情？', scoreKeys: ['language.expression'] },
@@ -20,6 +47,7 @@ Page({
     submitting: false,
     childName: '',
     childAge: '',
+    childAgeDisplay: '',
     showChildSetup: false,
     form: { name: '', age: '', hometown: '' },
     scores: {
@@ -35,7 +63,7 @@ Page({
       this.setData({ showChildSetup: true })
     } else {
       const child = app.globalData.currentChild
-      this.setData({ childName: child.name, childAge: child.age })
+      this.setData({ childName: child.name, childAge: child.age, childAgeDisplay: formatAge(child.age) })
     }
   },
 
@@ -48,16 +76,25 @@ Page({
     const { name, age, hometown } = this.data.form
     if (!name) return wx.showToast({ title: '请输入孩子姓名', icon: 'none' })
     try {
-      const child = { name, age: parseFloat(age) || 5.5, hometown }
+      const parsedAge = parseChineseAge(age)
+      const child = { name, age: parsedAge, hometown }
       const db = wx.cloud.database()
       const res = await db.collection('children').add({ data: { ...child, createdAt: db.serverDate() } })
       child._id = res._id
       getApp().globalData.currentChild = child
-      this.setData({ showChildSetup: false, childName: name, childAge: child.age })
+      this.setData({ showChildSetup: false, childName: name, childAge: parsedAge, childAgeDisplay: formatAge(parsedAge) })
     } catch (err) {
       wx.showToast({ title: '保存失败，请重试', icon: 'none' })
       console.error('saveChildInfo error:', err)
     }
+  },
+
+  editChildInfo() {
+    const child = getApp().globalData.currentChild || {}
+    this.setData({
+      showChildSetup: true,
+      form: { name: child.name || '', age: String(child.age || ''), hometown: child.hometown || '' },
+    })
   },
 
   openPopup(e) {
