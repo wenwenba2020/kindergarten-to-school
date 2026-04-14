@@ -1,39 +1,188 @@
-function parseChineseAge(input) {
-  if (!input) return 5.5
-  const s = String(input).trim()
-  // Pure number: "5" or "5.5"
-  if (/^\d+(\.\d+)?$/.test(s)) return parseFloat(s) || 5.5
-  // "5岁半"
-  const halfMatch = s.match(/^(\d+)\s*岁半/)
-  if (halfMatch) return parseInt(halfMatch[1]) + 0.5
-  // "5岁6个月"
-  const monthMatch = s.match(/^(\d+)\s*岁\s*(\d+)\s*个?月/)
-  if (monthMatch) return parseInt(monthMatch[1]) + parseInt(monthMatch[2]) / 12
-  // "5岁"
-  const yearMatch = s.match(/^(\d+)\s*岁/)
-  if (yearMatch) return parseInt(yearMatch[1])
-  return parseFloat(s) || 5.5
-}
-
-function formatAge(age) {
-  const n = parseFloat(age)
-  if (!n) return ''
-  if (n === Math.floor(n)) return `${n}岁`
-  const years = Math.floor(n)
-  const months = Math.round((n - years) * 12)
-  if (months === 6) return `${years}岁半`
-  return `${years}岁${months}个月`
+function formatAge(years, months) {
+  const y = parseInt(years) || 0
+  const m = parseInt(months) || 0
+  if (m === 0) return `${y}岁`
+  if (m === 6) return `${y}岁半`
+  return `${y}岁${m}个月`
 }
 
 const DIMENSIONS = [
-  { key: 'listening', name: '倾听理解', icon: '👂', desc: '孩子能否听懂老师的指令和故事内容，理解日常对话？', scoreKeys: ['language.listening'] },
-  { key: 'expression', name: '语言表达', icon: '🗣️', desc: '孩子能否清楚地说出自己的想法，讲述一件事情？', scoreKeys: ['language.expression'] },
-  { key: 'reading', name: '阅读习惯', icon: '📖', desc: '孩子是否喜欢阅读绘本，能否理解图书内容？', scoreKeys: ['language.reading'] },
-  { key: 'writing', name: '书写兴趣', icon: '✏️', desc: '孩子是否对写字感兴趣，握笔姿势是否正确？', scoreKeys: ['language.writing_interest'] },
-  { key: 'math', name: '数学能力', icon: '🔢', desc: '孩子能否数20以内的数，理解简单加减法，认识基本图形？', scoreKeys: ['math.counting', 'math.operation', 'math.shapes', 'math.space'] },
-  { key: 'social', name: '社交能力', icon: '🤝', desc: '孩子能否与同龄人合作游戏，学会轮流和分享？', scoreKeys: ['social'] },
-  { key: 'self_care', name: '自理能力', icon: '🧹', desc: '孩子能否独立穿衣、整理书包、自己如厕？', scoreKeys: ['self_care'] },
-  { key: 'focus', name: '专注力', icon: '🎯', desc: '孩子能否持续专注15分钟以上完成一项任务？', scoreKeys: ['focus', 'motor', 'emotion', 'time_awareness'] },
+  {
+    key: 'listening', name: '倾听理解', icon: '👂',
+    scoreKeys: ['language.listening'],
+    questions: [
+      {
+        text: '孩子能否理解并执行多步骤指令（如"先把书放好，再拿出画笔"）？',
+        options: [
+          { label: '能准确理解并完成多步骤指令', score: 5 },
+          { label: '能理解单步指令，多步骤需重复说明', score: 3 },
+          { label: '需反复解释才能理解简单指令', score: 1 },
+        ]
+      },
+      {
+        text: '孩子听完一个故事后，能否复述主要内容？',
+        options: [
+          { label: '能完整复述，说出角色和主要情节', score: 5 },
+          { label: '能说出故事大意，细节有遗漏', score: 3 },
+          { label: '只能说出故事里的一两个片段', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'expression', name: '语言表达', icon: '🗣️',
+    scoreKeys: ['language.expression'],
+    questions: [
+      {
+        text: '孩子能否清楚地用一段话描述一件事（含时间、地点、经过）？',
+        options: [
+          { label: '能完整描述，表达条理清晰', score: 5 },
+          { label: '能说出主要内容，但表达较零散', score: 3 },
+          { label: '表达不清，需大人帮助补充', score: 1 },
+        ]
+      },
+      {
+        text: '孩子是否愿意在集体面前发言？',
+        options: [
+          { label: '积极举手发言，声音响亮自信', score: 5 },
+          { label: '在熟悉的人面前能表达，不愿公开发言', score: 3 },
+          { label: '很少主动开口，需大人引导', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'reading', name: '阅读习惯', icon: '📖',
+    scoreKeys: ['language.reading'],
+    questions: [
+      {
+        text: '孩子平时对阅读的兴趣如何？',
+        options: [
+          { label: '主动要求看书，每天阅读超过20分钟', score: 5 },
+          { label: '喜欢听故事，但自主阅读时间较少', score: 3 },
+          { label: '对书本兴趣不大，需督促才看', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否理解图书内容并发表看法？',
+        options: [
+          { label: '能预测故事情节，理解寓意，有自己的想法', score: 5 },
+          { label: '能理解故事内容，但较少有自己的见解', score: 3 },
+          { label: '注意力主要在图画，不太理解故事内容', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'writing', name: '书写兴趣', icon: '✏️',
+    scoreKeys: ['language.writing_interest'],
+    questions: [
+      {
+        text: '孩子的握笔姿势和书写情况如何？',
+        options: [
+          { label: '握笔姿势正确，能认真描红，字形基本规范', score: 5 },
+          { label: '握笔有些问题，能完成简单描红', score: 3 },
+          { label: '不愿意写字，或握笔姿势很不规范', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能认识多少汉字？',
+        options: [
+          { label: '认识自己名字及100个以上常见汉字', score: 5 },
+          { label: '认识自己名字和部分汉字（20-50个）', score: 3 },
+          { label: '基本不认识汉字', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'math', name: '数学能力', icon: '🔢',
+    scoreKeys: ['math.counting', 'math.operation', 'math.shapes', 'math.space'],
+    questions: [
+      {
+        text: '孩子的数数和加减法掌握情况如何？',
+        options: [
+          { label: '能正确数20以内的数，掌握10以内加减法', score: 5 },
+          { label: '能数到20，加减法需要借助手指', score: 3 },
+          { label: '数到10有困难，加减法概念模糊', score: 1 },
+        ]
+      },
+      {
+        text: '孩子认识图形和空间方位的情况如何？',
+        options: [
+          { label: '认识常见几何图形，能准确区分上下左右前后', score: 5 },
+          { label: '认识基本图形，方位概念有时混淆', score: 3 },
+          { label: '图形和方位概念都比较模糊', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'social', name: '社交能力', icon: '🤝',
+    scoreKeys: ['social'],
+    questions: [
+      {
+        text: '孩子与同伴合作游戏的情况如何？',
+        options: [
+          { label: '主动合作，懂得轮流、分享和协商', score: 5 },
+          { label: '能与熟悉的小朋友一起玩，偶有争抢', score: 3 },
+          { label: '不喜欢与人合作，独自玩耍为主', score: 1 },
+        ]
+      },
+      {
+        text: '孩子遇到冲突或不如意时如何处理？',
+        options: [
+          { label: '用语言表达情绪，能尝试协商解决', score: 5 },
+          { label: '会向大人求助', score: 3 },
+          { label: '容易哭闹或动手', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'self_care', name: '自理能力', icon: '🧹',
+    scoreKeys: ['self_care'],
+    questions: [
+      {
+        text: '孩子日常自理的情况如何？',
+        options: [
+          { label: '能独立穿脱衣物（含系鞋带）、整理书包', score: 5 },
+          { label: '能完成大部分自理，系鞋带等精细动作需帮助', score: 3 },
+          { label: '大部分自理需要大人帮忙', score: 1 },
+        ]
+      },
+      {
+        text: '孩子整理物品的习惯如何？',
+        options: [
+          { label: '玩完会主动收拾，物品有固定摆放位置', score: 5 },
+          { label: '需要提醒才会整理', score: 3 },
+          { label: '不会主动整理，需大人代劳', score: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    key: 'focus', name: '专注力', icon: '🎯',
+    scoreKeys: ['focus', 'motor', 'emotion', 'time_awareness'],
+    questions: [
+      {
+        text: '孩子能持续专注多长时间？',
+        options: [
+          { label: '能专注完成一件事超过15-20分钟', score: 5 },
+          { label: '能专注10-15分钟，容易被外界分心', score: 3 },
+          { label: '很难持续专注超过5分钟', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否按时独立完成分配的任务？',
+        options: [
+          { label: '能在规定时间内独立完成（如拼图、画画）', score: 5 },
+          { label: '需要提醒和鼓励才能坚持完成', score: 3 },
+          { label: '经常放弃，难以完成需要一定时间的任务', score: 1 },
+        ]
+      }
+    ]
+  },
 ]
 
 Page({
@@ -43,13 +192,12 @@ Page({
     showPopup: false,
     currentDim: null,
     currentDimData: null,
-    currentRating: 3,
+    currentAnswers: [],
     submitting: false,
     childName: '',
-    childAge: '',
     childAgeDisplay: '',
     showChildSetup: false,
-    form: { name: '', age: '', hometown: '' },
+    form: { name: '', ageYears: '', ageMonths: '', hometown: '' },
     scores: {
       language: { listening: 3, expression: 3, reading: 3, writing_interest: 3 },
       math: { counting: 3, operation: 3, shapes: 3, space: 3 },
@@ -63,7 +211,9 @@ Page({
       this.setData({ showChildSetup: true })
     } else {
       const child = app.globalData.currentChild
-      this.setData({ childName: child.name, childAge: child.age, childAgeDisplay: formatAge(child.age) })
+      const years = child.ageYears !== undefined ? child.ageYears : Math.floor(child.age || 5)
+      const months = child.ageMonths !== undefined ? child.ageMonths : Math.round(((child.age || 5) - Math.floor(child.age || 5)) * 12)
+      this.setData({ childName: child.name, childAgeDisplay: formatAge(years, months) })
     }
   },
 
@@ -73,16 +223,19 @@ Page({
   },
 
   async saveChildInfo() {
-    const { name, age, hometown } = this.data.form
+    const { name, ageYears, ageMonths, hometown } = this.data.form
     if (!name) return wx.showToast({ title: '请输入孩子姓名', icon: 'none' })
+    if (!ageYears) return wx.showToast({ title: '请输入孩子年龄', icon: 'none' })
     try {
-      const parsedAge = parseChineseAge(age)
-      const child = { name, age: parsedAge, hometown }
+      const years = parseInt(ageYears) || 5
+      const months = parseInt(ageMonths) || 0
+      const age = years + months / 12
+      const child = { name, age, ageYears: years, ageMonths: months, hometown }
       const db = wx.cloud.database()
       const res = await db.collection('children').add({ data: { ...child, createdAt: db.serverDate() } })
       child._id = res._id
       getApp().globalData.currentChild = child
-      this.setData({ showChildSetup: false, childName: name, childAge: parsedAge, childAgeDisplay: formatAge(parsedAge) })
+      this.setData({ showChildSetup: false, childName: name, childAgeDisplay: formatAge(years, months) })
     } catch (err) {
       wx.showToast({ title: '保存失败，请重试', icon: 'none' })
       console.error('saveChildInfo error:', err)
@@ -91,26 +244,42 @@ Page({
 
   editChildInfo() {
     const child = getApp().globalData.currentChild || {}
+    const years = child.ageYears !== undefined ? child.ageYears : Math.floor(child.age || 5)
+    const months = child.ageMonths !== undefined ? child.ageMonths : Math.round(((child.age || 5) - Math.floor(child.age || 5)) * 12)
     this.setData({
       showChildSetup: true,
-      form: { name: child.name || '', age: String(child.age || ''), hometown: child.hometown || '' },
+      form: { name: child.name || '', ageYears: String(years || ''), ageMonths: months > 0 ? String(months) : '', hometown: child.hometown || '' },
     })
   },
 
   openPopup(e) {
-    const index = e.currentTarget.dataset.index
+    const index = +e.currentTarget.dataset.index
     const dim = this.data.dimensions[index]
-    this.setData({ showPopup: true, currentDim: index, currentDimData: dim, currentRating: dim.rating || 3 })
+    this.setData({
+      showPopup: true,
+      currentDim: index,
+      currentDimData: dim,
+      currentAnswers: new Array(dim.questions.length).fill(null),
+    })
   },
 
   closePopup() { this.setData({ showPopup: false }) },
 
-  onRateChange(e) { this.setData({ currentRating: e.detail }) },
+  selectOption(e) {
+    const { qindex, score } = e.currentTarget.dataset
+    const newAnswers = [...this.data.currentAnswers]
+    newAnswers[+qindex] = score
+    this.setData({ currentAnswers: newAnswers })
+  },
 
   confirmRating() {
-    const { currentDim, currentRating, dimensions, scores } = this.data
+    const { currentDim, currentAnswers, dimensions, scores, currentDimData } = this.data
+    const answered = currentAnswers.filter(a => a !== null && a !== undefined)
+    if (answered.length < currentDimData.questions.length) {
+      return wx.showToast({ title: '请完成所有问题', icon: 'none' })
+    }
+    const rating = Math.round(answered.reduce((a, b) => a + b, 0) / answered.length)
     const dim = dimensions[currentDim]
-    const rating = currentRating || 1
     const newScores = JSON.parse(JSON.stringify(scores))
     if (dim.key === 'listening') newScores.language.listening = rating
     else if (dim.key === 'expression') newScores.language.expression = rating
@@ -122,7 +291,7 @@ Page({
     else if (dim.key === 'focus') { newScores.focus = rating; newScores.motor = rating; newScores.emotion = rating; newScores.time_awareness = rating }
     const newDimensions = dimensions.map((d, i) => i === currentDim ? { ...d, done: true, rating } : d)
     const doneCount = newDimensions.filter(d => d.done).length
-    this.setData({ dimensions: newDimensions, doneCount, showPopup: false, scores: newScores })
+    this.setData({ dimensions: newDimensions, doneCount, showPopup: false, scores: newScores, currentAnswers: [] })
   },
 
   async submitAssessment() {

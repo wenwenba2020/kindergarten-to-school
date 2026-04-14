@@ -45,46 +45,49 @@
   </view>
 </view>
 
+<!-- 评估题目弹窗 -->
 <van-popup
   show="{{showPopup}}"
   position="bottom"
   round
   bind:close="closePopup"
-  custom-style="padding: 40rpx 32rpx 80rpx;"
+  custom-style="padding: 40rpx 32rpx 80rpx; max-height: 85vh; overflow-y: auto;"
 >
   <view wx:if="{{currentDimData}}">
     <view class="popup-icon">{{currentDimData.icon}}</view>
     <view class="popup-title">{{currentDimData.name}}</view>
-    <view class="popup-desc">{{currentDimData.desc}}</view>
-    <view class="popup-rate-label">
-      <text>需加强</text>
-      <text>非常棒</text>
+
+    <view class="question-block" wx:for="{{currentDimData.questions}}" wx:key="index">
+      <view class="question-text">{{index + 1}}. {{item.text}}</view>
+      <view
+        class="option-btn {{currentAnswers[index] === opt.score ? 'option-btn--selected' : ''}}"
+        wx:for="{{item.options}}"
+        wx:for-item="opt"
+        wx:key="score"
+        bindtap="selectOption"
+        data-qindex="{{index}}"
+        data-score="{{opt.score}}"
+      >{{opt.label}}</view>
     </view>
-    <van-rate
-      value="{{currentRating}}"
-      bind:change="onRateChange"
-      size="40"
-      color="#52C41A"
-      void-color="#d9f7be"
-      count="5"
-    />
+
     <van-button type="primary" block round custom-style="margin-top: 32rpx;" bindclick="confirmRating">
-      确认 ({{currentRating}} 分)
+      确认
     </van-button>
   </view>
 </van-popup>
 
-<!-- 孩子信息弹窗（首次进入时展示） -->
+<!-- 孩子信息弹窗（首次进入或点击修改时展示） -->
 <van-popup
   show="{{showChildSetup}}"
   position="bottom"
   round
   custom-style="padding: 40rpx 32rpx 80rpx;"
 >
-  <view class="popup-title">先告诉我关于孩子的信息</view>
-  <van-field label="孩子姓名" value="{{form.name}}" bind:input="onFormChange" data-key="name" placeholder="请输入" />
-  <van-field label="年龄" value="{{form.age}}" bind:input="onFormChange" data-key="age" placeholder="如：5.5" type="digit" />
-  <van-field label="籍贯" value="{{form.hometown}}" bind:input="onFormChange" data-key="hometown" placeholder="如：浙江省杭州市" />
+  <view class="popup-title">孩子的基本信息</view>
+  <van-field label="孩子姓名" value="{{form.name}}" bind:input="onFormChange" data-key="name" placeholder="请输入姓名" />
+  <van-field label="年龄（岁）" value="{{form.ageYears}}" bind:input="onFormChange" data-key="ageYears" placeholder="如：5" type="number" />
+  <van-field label="月数（可选）" value="{{form.ageMonths}}" bind:input="onFormChange" data-key="ageMonths" placeholder="如：9（5岁9个月填9）" type="number" />
+  <van-field label="所在城市" value="{{form.hometown}}" bind:input="onFormChange" data-key="hometown" placeholder="如：浙江省杭州市" />
   <van-button type="primary" block round custom-style="margin-top: 32rpx;" bindclick="saveChildInfo">
     开始评估
   </van-button>
