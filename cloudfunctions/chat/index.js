@@ -218,21 +218,35 @@ const QUOTA_LIMIT = 5
 async function getRemainCount(openid) {
   const db = cloud.database()
   const month = new Date().toISOString().slice(0, 7) // "2026-04"
-  const res = await db.collection('chat_quota').where({ openid, month }).get()
-  const used = res.data[0]?.count || 0
-  return Math.max(0, QUOTA_LIMIT - used)
+  try {
+    const res = await db.collection('chat_quota').where({ openid, month }).get()
+    const used = res.data[0]?.count || 0
+    return Math.max(0, QUOTA_LIMIT - used)
+  } catch (e) {
+    // Collection not yet created — treat as full quota available
+    return QUOTA_LIMIT
+  }
 }
 
 async function incrementCount(openid) {
   const db = cloud.database()
   const month = new Date().toISOString().slice(0, 7)
-  const res = await db.collection('chat_quota').where({ openid, month }).get()
-  if (res.data.length === 0) {
-    await db.collection('chat_quota').add({ data: { openid, month, count: 1 } })
-  } else {
-    await db.collection('chat_quota').doc(res.data[0]._id).update({
-      data: { count: db.command.inc(1) }
-    })
+  try {
+    const res = await db.collection('chat_quota').where({ openid, month }).get()
+    if (res.data.length === 0) {
+      await db.collection('chat_quota').add({ data: { openid, month, count: 1 } })
+    } else {
+      await db.collection('chat_quota').doc(res.data[0]._id).update({
+        data: { count: db.command.inc(1) }
+      })
+    }
+  } catch (e) {
+    // If query fails because collection doesn't exist, add directly (auto-creates collection)
+    try {
+      await db.collection('chat_quota').add({ data: { openid, month, count: 1 } })
+    } catch (e2) {
+      console.error('incrementCount error:', e2.message)
+    }
   }
 }
 
