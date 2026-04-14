@@ -9,12 +9,23 @@
 .dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20rpx; padding: 20rpx 24rpx; }
 .dim-card { background: #fff; border-radius: 20rpx; padding: 32rpx 20rpx; text-align: center; border: 3rpx solid var(--color-border); position: relative; transition: all 0.2s; }
 .dim-card--done { border-color: var(--color-primary); background: var(--color-primary-light); }
-.dim-card--active { box-shadow: 0 0 0 4rpx rgba(82,196,26,.3); }
+.dim-card--locked { opacity: 0.38; }
+.dim-card--active-next { border-color: var(--color-primary-mid); box-shadow: 0 0 0 3rpx rgba(82,196,26,.25); }
 .dim-check { position: absolute; top: 12rpx; right: 16rpx; font-size: 24rpx; }
+.dim-lock { position: absolute; top: 12rpx; right: 16rpx; font-size: 22rpx; }
 .dim-icon { font-size: 56rpx; margin-bottom: 12rpx; }
 .dim-name { font-size: 26rpx; font-weight: 600; margin-bottom: 8rpx; }
 .dim-score { font-size: 22rpx; color: var(--color-primary); }
 .dim-score--pending { color: var(--color-text-sub); }
+.dim-score--locked { color: var(--color-border); font-size: 20rpx; }
+/* Mode toggle */
+.mode-toggle { display: flex; align-items: center; justify-content: space-between; margin: 12rpx 24rpx 0; padding: 20rpx 24rpx; }
+.mode-toggle-left { display: flex; align-items: center; gap: 16rpx; }
+.mode-toggle-icon { font-size: 40rpx; }
+.mode-toggle-title { font-size: 28rpx; font-weight: 600; color: var(--color-text); }
+.mode-toggle-sub { font-size: 22rpx; color: var(--color-text-sub); margin-top: 4rpx; }
+/* Child mode popup tag */
+.popup-mode-tag { text-align: center; font-size: 22rpx; color: var(--color-primary-dark); background: var(--color-primary-light); border-radius: 24rpx; padding: 6rpx 20rpx; display: inline-block; margin: 0 auto 24rpx; width: fit-content; }
 .bottom-btn { position: fixed; bottom: 0; left: 0; right: 0; padding: 24rpx 32rpx 48rpx; background: #fff; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,.06); }
 .popup-icon { font-size: 72rpx; text-align: center; margin-bottom: 16rpx; }
 .popup-title { font-size: 34rpx; font-weight: 700; text-align: center; margin-bottom: 24rpx; }

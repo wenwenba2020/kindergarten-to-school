@@ -13,21 +13,35 @@
     <view class="child-info-edit" bindtap="editChildInfo">修改</view>
   </view>
 
+  <!-- 儿童自测模式开关 -->
+  <view class="mode-toggle card" wx:if="{{childName}}">
+    <view class="mode-toggle-left">
+      <text class="mode-toggle-icon">🧒</text>
+      <view>
+        <view class="mode-toggle-title">儿童自测模式</view>
+        <view class="mode-toggle-sub">由孩子自己回答，家长引导</view>
+      </view>
+    </view>
+    <switch checked="{{childMode}}" bindchange="toggleChildMode" color="#52C41A" />
+  </view>
+
   <view class="dim-grid">
     <view
-      class="dim-card {{item.done ? 'dim-card--done' : ''}} {{currentDim === index ? 'dim-card--active' : ''}}"
+      class="dim-card {{item.done ? 'dim-card--done' : ''}} {{item.locked ? 'dim-card--locked' : ''}} {{!item.locked && !item.done ? 'dim-card--active-next' : ''}}"
       wx:for="{{dimensions}}"
       wx:key="key"
       bindtap="openPopup"
       data-index="{{index}}"
     >
       <view class="dim-check" wx:if="{{item.done}}">✅</view>
+      <view class="dim-lock" wx:elif="{{item.locked}}">🔒</view>
       <view class="dim-icon">{{item.icon}}</view>
       <view class="dim-name">{{item.name}}</view>
       <view class="dim-score" wx:if="{{item.done}}">
         <text wx:for="{{item.rating}}" wx:key="*this">⭐</text>
       </view>
-      <view class="dim-score dim-score--pending" wx:else>待评估</view>
+      <view class="dim-score dim-score--pending" wx:elif="{{!item.locked}}">待评估</view>
+      <view class="dim-score dim-score--locked" wx:else>未解锁</view>
     </view>
   </view>
 
@@ -56,8 +70,9 @@
   <view wx:if="{{currentDimData}}">
     <view class="popup-icon">{{currentDimData.icon}}</view>
     <view class="popup-title">{{currentDimData.name}}</view>
+    <view class="popup-mode-tag" wx:if="{{childMode}}">🧒 儿童自测模式</view>
 
-    <view class="question-block" wx:for="{{currentDimData.questions}}" wx:for-index="qIdx" wx:for-item="question" wx:key="qIdx">
+    <view class="question-block" wx:for="{{currentQuestions}}" wx:for-index="qIdx" wx:for-item="question" wx:key="qIdx">
       <view class="question-text">{{qIdx + 1}}. {{question.text}}</view>
       <view
         class="option-btn {{currentAnswers[qIdx] === opt.score ? 'option-btn--selected' : ''}}"
@@ -76,7 +91,7 @@
   </view>
 </van-popup>
 
-<!-- 孩子信息弹窗（首次进入或点击修改时展示） -->
+<!-- 孩子信息弹窗 -->
 <van-popup
   show="{{showChildSetup}}"
   position="bottom"
