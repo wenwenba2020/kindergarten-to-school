@@ -10,7 +10,10 @@
 
   <view class="child-info card" wx:if="{{childName}}">
     <text class="child-info-text">🌱 正在评估：{{childName}}，{{childAgeDisplay}}</text>
-    <view class="child-info-edit" bindtap="editChildInfo">修改</view>
+    <view style="display:flex;align-items:center;gap:12rpx;flex-shrink:0;">
+      <text wx:if="{{assessRemain !== null}}" class="remain-tag">本月剩余 {{assessRemain}} 次</text>
+      <view class="child-info-edit" bindtap="editChildInfo">修改</view>
+    </view>
   </view>
 
   <!-- 评估阶段标识 -->
@@ -47,14 +50,7 @@
       disabled="{{doneCount < dimensions.length}}"
       bindclick="submitAssessment"
       loading="{{submitting}}"
-    >
-      <block wx:if="{{phase === 'parent'}}">
-        {{doneCount < dimensions.length ? '完成全部评估后继续' : '提交家长评估 →'}}
-      </block>
-      <block wx:else>
-        {{doneCount < dimensions.length ? '完成孩子自测后生成报告' : '生成综合评估报告 →'}}
-      </block>
-    </van-button>
+    >{{phase === 'parent' ? (doneCount < dimensions.length ? '完成全部评估后继续' : '提交家长评估 →') : (doneCount < dimensions.length ? '完成孩子自测后生成报告' : '生成综合评估报告 →')}}</van-button>
   </view>
 </view>
 

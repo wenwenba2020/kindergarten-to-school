@@ -335,19 +335,328 @@ const DIMENSIONS = [
   },
 ]
 
-function buildDimensions(phase) {
-  return DIMENSIONS.map((d, i) => ({
-    ...d,
-    done: false,
-    rating: 0,
-    locked: i > 0,
-    questions: phase === 'child' ? d.childQuestions : d.questions,
-  }))
+// Alternative question sets (version 1) — used on reassessment
+const ALT_QUESTIONS = {
+  listening: {
+    questions: [
+      {
+        text: '孩子在嘈杂环境中（如超市、公共场合）能否听清并理解大人的话？',
+        options: [
+          { label: '能在嘈杂环境中专注听并准确理解', score: 5 },
+          { label: '安静环境能听清，嘈杂时需重复', score: 3 },
+          { label: '需要大人凑近、反复说才能理解', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否按顺序完成"先…再…最后…"这类多步骤指令？',
+        options: [
+          { label: '能记住并按顺序完成全部步骤', score: 5 },
+          { label: '能完成两步，第三步容易忘', score: 3 },
+          { label: '只能跟着做一步，需逐步引导', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '超市里很吵，妈妈叫你名字你能听到吗？',
+        options: [
+          { label: '😊 能！马上就听到了', score: 5 },
+          { label: '🤔 有时候能听到', score: 3 },
+          { label: '😅 经常听不到', score: 1 },
+        ]
+      },
+      {
+        text: '老师说"先洗手，再吃饭，最后放碗"，你能全部记住吗？',
+        options: [
+          { label: '😊 记得住，都能做到', score: 5 },
+          { label: '🤔 能记住两步', score: 3 },
+          { label: '😅 只记住第一步', score: 1 },
+        ]
+      }
+    ]
+  },
+  expression: {
+    questions: [
+      {
+        text: '孩子与陌生大人交流时的表现如何？',
+        options: [
+          { label: '主动问好，能清楚回答问题，不怯场', score: 5 },
+          { label: '需引导才开口，但能正常交流', score: 3 },
+          { label: '不愿开口，躲在大人后面', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否用语言描述一幅图画或一件物品的特征？',
+        options: [
+          { label: '能使用颜色、形状、大小等多种词汇描述', score: 5 },
+          { label: '能说出主要特征，描述较简单', score: 3 },
+          { label: '只能说出一两个词', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '遇到不认识的叔叔阿姨问你名字，你会怎么做？',
+        options: [
+          { label: '😊 大声说出自己的名字', score: 5 },
+          { label: '🤔 小声说，有点害羞', score: 3 },
+          { label: '😅 不想说，藏起来', score: 1 },
+        ]
+      },
+      {
+        text: '你能说出一只小猫有哪些特点吗？',
+        options: [
+          { label: '😊 能说好多（毛软软的、眼睛圆圆的…）', score: 5 },
+          { label: '🤔 能说一两个', score: 3 },
+          { label: '😅 不知道怎么说', score: 1 },
+        ]
+      }
+    ]
+  },
+  reading: {
+    questions: [
+      {
+        text: '孩子是否有自己喜欢的书，会主动翻看、反复阅读？',
+        options: [
+          { label: '有固定喜爱的书，会主动拿出来反复看', score: 5 },
+          { label: '有时会翻书，但无固定兴趣方向', score: 3 },
+          { label: '对书无明显兴趣，更喜欢视频或玩具', score: 1 },
+        ]
+      },
+      {
+        text: '孩子对文字的兴趣如何？（如路牌、商标上的字）',
+        options: [
+          { label: '会主动询问字的含义，尝试认读', score: 5 },
+          { label: '偶尔关注，被问到才说', score: 3 },
+          { label: '对文字没有明显好奇心', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '你有没有特别喜欢的一本书，愿意反复看？',
+        options: [
+          { label: '😊 有！我能讲出里面的故事', score: 5 },
+          { label: '🤔 有几本，但不太记得内容', score: 3 },
+          { label: '😅 没有特别喜欢的书', score: 1 },
+        ]
+      },
+      {
+        text: '走路看到路牌或商店名字，你会想知道那是什么字吗？',
+        options: [
+          { label: '😊 会！我经常问爸爸妈妈', score: 5 },
+          { label: '🤔 有时候会问', score: 3 },
+          { label: '😅 不太在意', score: 1 },
+        ]
+      }
+    ]
+  },
+  writing: {
+    questions: [
+      {
+        text: '孩子是否会用图画或符号表达自己的想法（如画日记）？',
+        options: [
+          { label: '会主动用画画或图文结合记录事情', score: 5 },
+          { label: '喜欢画画，但不会结合文字', score: 3 },
+          { label: '不喜欢画画或书写类活动', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否写出自己的名字？',
+        options: [
+          { label: '能工整地写出全名，笔划基本正确', score: 5 },
+          { label: '能写，但笔划顺序或形状有误', score: 3 },
+          { label: '不会写，或只能描红', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '你有没有用画画记录过今天发生的事情？',
+        options: [
+          { label: '😊 有！我喜欢画"日记"', score: 5 },
+          { label: '🤔 偶尔画一画', score: 3 },
+          { label: '😅 没有', score: 1 },
+        ]
+      },
+      {
+        text: '你能自己写出自己的名字吗？',
+        options: [
+          { label: '😊 能！写得很好看', score: 5 },
+          { label: '🤔 能写，但有时候写错', score: 3 },
+          { label: '😅 还不会写', score: 1 },
+        ]
+      }
+    ]
+  },
+  math: {
+    questions: [
+      {
+        text: '孩子在生活中能否自发用数学解决问题（如分糖果、数台阶）？',
+        options: [
+          { label: '会主动用数数、比较解决实际问题', score: 5 },
+          { label: '在引导下能用数学方法，不会主动', score: 3 },
+          { label: '对生活中的数学场景不感兴趣', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否按大小、长短对5个以上物品排序？',
+        options: [
+          { label: '能准确排序5个以上，还能说出"最大""第三"', score: 5 },
+          { label: '能排3-4个，较多时出现混乱', score: 3 },
+          { label: '排序概念较模糊', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '如果把5颗糖分给2个人，你知道怎么分吗？',
+        options: [
+          { label: '😊 知道！一人2颗，还剩1颗', score: 5 },
+          { label: '🤔 大概知道，要数一数', score: 3 },
+          { label: '😅 不知道怎么分', score: 1 },
+        ]
+      },
+      {
+        text: '把5根小棒从短到长排好，你能做到吗？',
+        options: [
+          { label: '😊 能！还能说出哪根最短', score: 5 },
+          { label: '🤔 能排，有时候会搞错', score: 3 },
+          { label: '😅 不太会排', score: 1 },
+        ]
+      }
+    ]
+  },
+  social: {
+    questions: [
+      {
+        text: '孩子在陌生小朋友中的表现如何？',
+        options: [
+          { label: '主动打招呼，很快融入新群体', score: 5 },
+          { label: '需要时间热身，但能逐步融入', score: 3 },
+          { label: '长时间保持距离，不愿主动接触', score: 1 },
+        ]
+      },
+      {
+        text: '孩子能否使用"请、谢谢、对不起"等礼貌用语？',
+        options: [
+          { label: '自然地在合适场景使用礼貌用语', score: 5 },
+          { label: '需提醒才会用', score: 3 },
+          { label: '很少主动使用礼貌用语', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '去新的地方遇到不认识的小朋友，你会主动和他们玩吗？',
+        options: [
+          { label: '😊 会！我会去打招呼', score: 5 },
+          { label: '🤔 要先观察一下才敢去', score: 3 },
+          { label: '😅 不敢，我会等他们来找我', score: 1 },
+        ]
+      },
+      {
+        text: '不小心碰到别人，你会说什么？',
+        options: [
+          { label: '😊 马上说"对不起"', score: 5 },
+          { label: '🤔 有时候说，有时候忘', score: 3 },
+          { label: '😅 不知道要说什么', score: 1 },
+        ]
+      }
+    ]
+  },
+  self_care: {
+    questions: [
+      {
+        text: '孩子能否独立处理如厕及个人卫生（饭前洗手、擦嘴等）？',
+        options: [
+          { label: '完全独立，养成良好卫生习惯', score: 5 },
+          { label: '能基本自理，部分环节需提醒', score: 3 },
+          { label: '如厕或洗手等需要大人全程协助', score: 1 },
+        ]
+      },
+      {
+        text: '孩子在幼儿园的自我管理情况如何（老师反馈）？',
+        options: [
+          { label: '老师反馈自理能力强，不需要特别照顾', score: 5 },
+          { label: '偶尔需要老师提醒', score: 3 },
+          { label: '经常需要老师额外协助', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '上厕所和洗手，你能自己做好吗？',
+        options: [
+          { label: '😊 能！每次都自己做', score: 5 },
+          { label: '🤔 基本可以，有时候要提醒', score: 3 },
+          { label: '😅 需要爸爸妈妈帮忙', score: 1 },
+        ]
+      },
+      {
+        text: '在幼儿园，老师需要经常帮助你吗？',
+        options: [
+          { label: '😊 不需要，我自己能搞定', score: 5 },
+          { label: '🤔 偶尔需要老师提醒', score: 3 },
+          { label: '😅 老师经常要帮我', score: 1 },
+        ]
+      }
+    ]
+  },
+  focus: {
+    questions: [
+      {
+        text: '孩子在没有大人监督时能否独立完成一项活动（如拼图、画画）？',
+        options: [
+          { label: '能自主完成，中间不需要大人介入', score: 5 },
+          { label: '需要偶尔鼓励，大人陪着能完成', score: 3 },
+          { label: '离开大人监督很快放弃', score: 1 },
+        ]
+      },
+      {
+        text: '孩子对时间的感知如何（如知道"再过5分钟就要走了"）？',
+        options: [
+          { label: '能理解时间提示，按约定收拾停止', score: 5 },
+          { label: '能理解，但执行时经常拖延', score: 3 },
+          { label: '对时间没概念，需要强制转换', score: 1 },
+        ]
+      }
+    ],
+    childQuestions: [
+      {
+        text: '爸爸妈妈不在旁边，你能自己把拼图拼完吗？',
+        options: [
+          { label: '😊 能！我自己能拼完', score: 5 },
+          { label: '🤔 要爸爸妈妈偶尔鼓励我', score: 3 },
+          { label: '😅 没人陪就不想拼了', score: 1 },
+        ]
+      },
+      {
+        text: '妈妈说"再玩5分钟就要走了"，你能在5分钟后自己停下来吗？',
+        options: [
+          { label: '😊 能！我知道时间到了要走', score: 5 },
+          { label: '🤔 有时候能，有时候还想再玩', score: 3 },
+          { label: '😅 不想停，要妈妈拉着走', score: 1 },
+        ]
+      }
+    ]
+  },
+}
+
+function buildDimensions(phase, version) {
+  return DIMENSIONS.map((d, i) => {
+    const useAlt = version && version % 2 === 1 && ALT_QUESTIONS[d.key]
+    const altSet = useAlt ? ALT_QUESTIONS[d.key] : null
+    const qs = phase === 'child'
+      ? (altSet ? altSet.childQuestions : d.childQuestions)
+      : (altSet ? altSet.questions : d.questions)
+    return { ...d, done: false, rating: 0, locked: i > 0, questions: qs }
+  })
 }
 
 Page({
   data: {
-    dimensions: buildDimensions('parent'),
+    dimensions: buildDimensions('parent', 0),
     doneCount: 0,
     phase: 'parent',       // 'parent' | 'child'
     parentScores: null,    // stored after parent phase
@@ -362,25 +671,41 @@ Page({
     showChildSetup: false,
     form: { name: '', ageYears: '', ageMonths: '', hometown: '' },
     scores: JSON.parse(JSON.stringify(INITIAL_SCORES)),
+    assessRemain: null,   // remaining assessments this month
+    assessLimit: 3,
   },
 
   onLoad() {
+    const version = wx.getStorageSync('assessmentVersion') || 0
     const app = getApp()
     if (!app.globalData.currentChild) {
-      this.setData({ showChildSetup: true })
+      this.setData({ showChildSetup: true, dimensions: buildDimensions('parent', version) })
     } else {
       const child = app.globalData.currentChild
       const years = child.ageYears !== undefined ? child.ageYears : Math.floor(child.age || 5)
       const months = child.ageMonths !== undefined ? child.ageMonths : Math.round(((child.age || 5) - Math.floor(child.age || 5)) * 12)
-      this.setData({ childName: child.name, childAgeDisplay: formatAge(years, months) })
+      this.setData({ childName: child.name, childAgeDisplay: formatAge(years, months), dimensions: buildDimensions('parent', version) })
     }
+    this._loadAssessQuota()
+  },
+
+  async _loadAssessQuota() {
+    try {
+      const res = await wx.cloud.callFunction({ name: 'assessment', data: { action: 'getQuota' } })
+      const { remain, limit } = res.result?.data || {}
+      if (remain !== undefined) this.setData({ assessRemain: remain, assessLimit: limit || 3 })
+    } catch { /* ignore */ }
   },
 
   onShow() {
     if (wx.getStorageSync('assessmentNeedReset')) {
       wx.removeStorageSync('assessmentNeedReset')
+      // Increment version so next assessment uses alternate questions
+      const prevVersion = wx.getStorageSync('assessmentVersion') || 0
+      const nextVersion = prevVersion + 1
+      wx.setStorageSync('assessmentVersion', nextVersion)
       this.setData({
-        dimensions: buildDimensions('parent'),
+        dimensions: buildDimensions('parent', nextVersion),
         doneCount: 0,
         phase: 'parent',
         parentScores: null,
@@ -388,6 +713,7 @@ Page({
         currentAnswers: [],
         scores: JSON.parse(JSON.stringify(INITIAL_SCORES)),
       })
+      this._loadAssessQuota()
     }
   },
 
@@ -499,8 +825,8 @@ Page({
       wx.showModal({
         title: '家长评估已完成 🎉',
         content: '是否邀请孩子参与自测？双方评估可生成家长与孩子的对比分析，发现认知差异。',
-        confirmText: '继续孩子自测',
-        cancelText: '直接看结果',
+        confirmText: '孩子自测',
+        cancelText: '看结果',
         success: (res) => {
           if (res.confirm) {
             this._startChildPhase()
@@ -519,7 +845,7 @@ Page({
     this.setData({
       parentScores,
       phase: 'child',
-      dimensions: buildDimensions('child'),
+      dimensions: buildDimensions('child', wx.getStorageSync('assessmentVersion') || 0),
       doneCount: 0,
       scores: JSON.parse(JSON.stringify(INITIAL_SCORES)),
       showPopup: false,
@@ -535,6 +861,17 @@ Page({
       const data = { scores: parentScores }
       if (childScores) data.childScores = childScores
       const res = await wx.cloud.callFunction({ name: 'assessment', data })
+      if (res.result.code === 429) {
+        wx.showModal({
+          title: '本月评估次数已用完',
+          content: `每月最多评估 ${this.data.assessLimit} 次，下月自动重置。如有需要请联系客服。`,
+          showCancel: false,
+          confirmText: '知道了',
+        })
+        this.setData({ submitting: false, assessRemain: 0 })
+        wx.hideLoading()
+        return
+      }
       if (res.result.code !== 0) throw new Error(res.result.message)
       const result = res.result.data
       const app = getApp()
@@ -545,6 +882,7 @@ Page({
       })
       wx.setStorageSync('lastAssessmentResult', result)
       wx.setStorageSync('lastAssessmentScores', parentScores)
+      if (result.remain !== undefined) this.setData({ assessRemain: result.remain })
       wx.navigateTo({ url: `/pages/result/result?assessmentId=${record._id}` })
     } catch (err) {
       wx.showToast({ title: '评估失败，请重试', icon: 'none' })
