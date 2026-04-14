@@ -18,13 +18,11 @@
 .dim-score { font-size: 22rpx; color: var(--color-primary); }
 .dim-score--pending { color: var(--color-text-sub); }
 .dim-score--locked { color: var(--color-border); font-size: 20rpx; }
-/* Mode toggle */
-.mode-toggle { display: flex; align-items: center; justify-content: space-between; margin: 12rpx 24rpx 0; padding: 20rpx 24rpx; }
-.mode-toggle-left { display: flex; align-items: center; gap: 16rpx; }
-.mode-toggle-icon { font-size: 40rpx; }
-.mode-toggle-title { font-size: 28rpx; font-weight: 600; color: var(--color-text); }
-.mode-toggle-sub { font-size: 22rpx; color: var(--color-text-sub); margin-top: 4rpx; }
-/* Child mode popup tag */
+/* Phase badge */
+.phase-badge { margin: 12rpx 24rpx 0; padding: 20rpx 24rpx; }
+.phase-badge-text { font-size: 26rpx; font-weight: 600; color: var(--color-primary-dark); }
+.phase-badge-text--child { color: #722ed1; }
+/* Popup mode tag */
 .popup-mode-tag { text-align: center; font-size: 22rpx; color: var(--color-primary-dark); background: var(--color-primary-light); border-radius: 24rpx; padding: 6rpx 20rpx; display: inline-block; margin: 0 auto 24rpx; width: fit-content; }
 .bottom-btn { position: fixed; bottom: 0; left: 0; right: 0; padding: 24rpx 32rpx 48rpx; background: #fff; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,.06); }
 .popup-icon { font-size: 72rpx; text-align: center; margin-bottom: 16rpx; }

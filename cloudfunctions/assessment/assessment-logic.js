@@ -9,12 +9,52 @@ function score(value) {
   return Math.max(1, Math.min(5, n))
 }
 
+// Flatten nested scores structure into {dimensionKey: avgScore} map
+function flattenScores(s) {
+  const lang = s.language || {}
+  const math = s.math || {}
+  const langAvg = LANG_KEYS.map(k => score(lang[k] ?? 3)).reduce((a, b) => a + b, 0) / LANG_KEYS.length
+  const mathAvg = MATH_KEYS.map(k => score(math[k] ?? 3)).reduce((a, b) => a + b, 0) / MATH_KEYS.length
+  return {
+    语言能力: Math.round(langAvg * 10) / 10,
+    数学认知: Math.round(mathAvg * 10) / 10,
+    社交能力: score(s.social ?? 3),
+    自理能力: score(s.self_care ?? 3),
+    运动协调: score(s.motor ?? 3),
+    专注力: score(s.focus ?? 3),
+    情绪管理: score(s.emotion ?? 3),
+    时间观念: score(s.time_awareness ?? 3),
+  }
+}
+
+// Compare parent vs child scores; return items with notable gaps (>=1.5)
+function generateComparison(parentScores, childScores) {
+  const parent = flattenScores(parentScores)
+  const child = flattenScores(childScores)
+  const result = []
+  for (const dim of Object.keys(parent)) {
+    const p = parent[dim]
+    const c = child[dim]
+    const gap = Math.round((p - c) * 10) / 10
+    if (Math.abs(gap) >= 1.5) {
+      let note
+      if (gap >= 1.5) {
+        note = '家长认为表现良好，但孩子自测结果偏低，建议多观察孩子的实际体验和感受'
+      } else {
+        note = '孩子自测结果高于家长评估，孩子对此方面信心较强，可多给予鼓励和发挥空间'
+      }
+      result.push({ dimension: dim, parentScore: p, childScore: c, gap, note })
+    }
+  }
+  return result
+}
+
 function addFeedback(s, strengths, areas, recs, strengthMsg, areaMsg, tip) {
   if (s >= 4) strengths.push(strengthMsg)
   else if (s <= 2) { areas.push(areaMsg); recs.push(tip) }
 }
 
-function calculateAssessment(profile = {}) {
+function calculateAssessment(profile = {}, childProfile = null) {
   const language = profile.language || {}
   const math = profile.math || {}
 
@@ -76,7 +116,17 @@ function calculateAssessment(profile = {}) {
     recommendations.push('建议增加幼小衔接训练的投入')
   }
 
-  return { overall_level, strengths, areas_to_improve, recommendations }
+  const result = { overall_level, strengths, areas_to_improve, recommendations }
+
+  if (childProfile) {
+    result.hasChildAssessment = true
+    result.childComparison = generateComparison(profile, childProfile)
+  } else {
+    result.hasChildAssessment = false
+    result.childComparison = []
+  }
+
+  return result
 }
 
 module.exports = { calculateAssessment }

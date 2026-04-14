@@ -36,5 +36,8 @@ Page({
     }
   },
 
-  goBack() { wx.switchTab({ url: '/pages/assessment/assessment' }) },
+  goBack() {
+    wx.setStorageSync('assessmentNeedReset', true)
+    wx.switchTab({ url: '/pages/assessment/assessment' })
+  },
 })

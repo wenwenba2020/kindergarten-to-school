@@ -40,6 +40,25 @@
     </view>
   </view>
 
+  <!-- 家长与孩子对比分析 -->
+  <view class="section card" wx:if="{{result.hasChildAssessment && result.childComparison.length > 0}}">
+    <view class="section-head">🔍 家长与孩子认知对比</view>
+    <view class="cmp-intro">以下维度存在明显差异，建议重点关注：</view>
+    <view class="cmp-item" wx:for="{{result.childComparison}}" wx:key="dimension">
+      <view class="cmp-dim">{{item.dimension}}</view>
+      <view class="cmp-scores">
+        <view class="cmp-score-tag cmp-score-tag--parent">家长 {{item.parentScore}}分</view>
+        <view class="cmp-arrow">→</view>
+        <view class="cmp-score-tag cmp-score-tag--child">孩子 {{item.childScore}}分</view>
+      </view>
+      <view class="cmp-note">{{item.note}}</view>
+    </view>
+  </view>
+  <view class="section card cmp-all-ok" wx:elif="{{result.hasChildAssessment && result.childComparison.length === 0}}">
+    <view class="section-head">🔍 家长与孩子认知对比</view>
+    <view class="cmp-intro">家长与孩子的评估结果高度一致，说明双方对孩子能力的认知较为统一 👍</view>
+  </view>
+
   <view class="btn-group">
     <van-button type="primary" block round bindclick="generatePlan" loading="{{loading}}">
       生成个性化计划 →

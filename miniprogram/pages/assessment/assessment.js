@@ -6,6 +6,12 @@ function formatAge(years, months) {
   return `${y}岁${m}个月`
 }
 
+const INITIAL_SCORES = {
+  language: { listening: 3, expression: 3, reading: 3, writing_interest: 3 },
+  math: { counting: 3, operation: 3, shapes: 3, space: 3 },
+  social: 3, self_care: 3, motor: 3, focus: 3, emotion: 3, time_awareness: 3,
+}
+
 const DIMENSIONS = [
   {
     key: 'listening', name: '倾听理解', icon: '👂',
@@ -329,21 +335,22 @@ const DIMENSIONS = [
   },
 ]
 
-function buildDimensions(childMode) {
+function buildDimensions(phase) {
   return DIMENSIONS.map((d, i) => ({
     ...d,
     done: false,
     rating: 0,
     locked: i > 0,
-    questions: childMode ? d.childQuestions : d.questions,
+    questions: phase === 'child' ? d.childQuestions : d.questions,
   }))
 }
 
 Page({
   data: {
-    dimensions: buildDimensions(false),
+    dimensions: buildDimensions('parent'),
     doneCount: 0,
-    childMode: false,
+    phase: 'parent',       // 'parent' | 'child'
+    parentScores: null,    // stored after parent phase
     showPopup: false,
     currentDim: null,
     currentDimData: null,
@@ -354,11 +361,7 @@ Page({
     childAgeDisplay: '',
     showChildSetup: false,
     form: { name: '', ageYears: '', ageMonths: '', hometown: '' },
-    scores: {
-      language: { listening: 3, expression: 3, reading: 3, writing_interest: 3 },
-      math: { counting: 3, operation: 3, shapes: 3, space: 3 },
-      social: 3, self_care: 3, motor: 3, focus: 3, emotion: 3, time_awareness: 3,
-    },
+    scores: JSON.parse(JSON.stringify(INITIAL_SCORES)),
   },
 
   onLoad() {
@@ -370,6 +373,21 @@ Page({
       const years = child.ageYears !== undefined ? child.ageYears : Math.floor(child.age || 5)
       const months = child.ageMonths !== undefined ? child.ageMonths : Math.round(((child.age || 5) - Math.floor(child.age || 5)) * 12)
       this.setData({ childName: child.name, childAgeDisplay: formatAge(years, months) })
+    }
+  },
+
+  onShow() {
+    if (wx.getStorageSync('assessmentNeedReset')) {
+      wx.removeStorageSync('assessmentNeedReset')
+      this.setData({
+        dimensions: buildDimensions('parent'),
+        doneCount: 0,
+        phase: 'parent',
+        parentScores: null,
+        showPopup: false,
+        currentAnswers: [],
+        scores: JSON.parse(JSON.stringify(INITIAL_SCORES)),
+      })
     }
   },
 
@@ -406,20 +424,6 @@ Page({
       showChildSetup: true,
       form: { name: child.name || '', ageYears: String(years || ''), ageMonths: months > 0 ? String(months) : '', hometown: child.hometown || '' },
     })
-  },
-
-  toggleChildMode(e) {
-    const childMode = e.detail.value
-    // Rebuild dimensions with new question set, preserve done/rating/locked state
-    const current = this.data.dimensions
-    const newDimensions = DIMENSIONS.map((d, i) => ({
-      ...d,
-      done: current[i].done,
-      rating: current[i].rating,
-      locked: current[i].locked,
-      questions: childMode ? d.childQuestions : d.questions,
-    }))
-    this.setData({ childMode, dimensions: newDimensions })
   },
 
   openPopup(e) {
@@ -466,7 +470,6 @@ Page({
     else if (dim.key === 'self_care') newScores.self_care = rating
     else if (dim.key === 'focus') { newScores.focus = rating; newScores.motor = rating; newScores.emotion = rating; newScores.time_awareness = rating }
 
-    // Update done state and unlock next card
     const newDimensions = dimensions.map((d, i) => {
       if (i === currentDim) return { ...d, done: true, rating }
       if (i === currentDim + 1) return { ...d, locked: false }
@@ -475,38 +478,73 @@ Page({
     const doneCount = newDimensions.filter(d => d.done).length
     this.setData({ dimensions: newDimensions, doneCount, showPopup: false, scores: newScores, currentAnswers: [] })
 
-    // Auto-open next card after short delay
+    // Auto-open next card
     const nextIndex = currentDim + 1
     if (nextIndex < newDimensions.length) {
       setTimeout(() => {
         const nextDim = newDimensions[nextIndex]
-        const nextQuestions = nextDim.questions
         this.setData({
           showPopup: true,
           currentDim: nextIndex,
           currentDimData: nextDim,
-          currentQuestions: nextQuestions,
-          currentAnswers: new Array(nextQuestions.length).fill(null),
+          currentQuestions: nextDim.questions,
+          currentAnswers: new Array(nextDim.questions.length).fill(null),
         })
       }, 400)
     }
   },
 
-  async submitAssessment() {
+  submitAssessment() {
+    if (this.data.phase === 'parent') {
+      wx.showModal({
+        title: '家长评估已完成 🎉',
+        content: '是否邀请孩子参与自测？双方评估可生成家长与孩子的对比分析，发现认知差异。',
+        confirmText: '继续孩子自测',
+        cancelText: '直接看结果',
+        success: (res) => {
+          if (res.confirm) {
+            this._startChildPhase()
+          } else {
+            this._doSubmit(this.data.scores, null)
+          }
+        }
+      })
+      return
+    }
+    this._doSubmit(this.data.parentScores, this.data.scores)
+  },
+
+  _startChildPhase() {
+    const parentScores = JSON.parse(JSON.stringify(this.data.scores))
+    this.setData({
+      parentScores,
+      phase: 'child',
+      dimensions: buildDimensions('child'),
+      doneCount: 0,
+      scores: JSON.parse(JSON.stringify(INITIAL_SCORES)),
+      showPopup: false,
+      currentAnswers: [],
+    })
+    wx.showToast({ title: '现在开始孩子自测', icon: 'success' })
+  },
+
+  async _doSubmit(parentScores, childScores) {
     this.setData({ submitting: true })
-    wx.showLoading({ title: '正在评估...' })
+    wx.showLoading({ title: '正在生成报告...' })
     try {
-      const res = await wx.cloud.callFunction({ name: 'assessment', data: { scores: this.data.scores } })
+      const data = { scores: parentScores }
+      if (childScores) data.childScores = childScores
+      const res = await wx.cloud.callFunction({ name: 'assessment', data })
       if (res.result.code !== 0) throw new Error(res.result.message)
       const result = res.result.data
       const app = getApp()
       const child = app.globalData.currentChild
       const db = wx.cloud.database()
       const record = await db.collection('assessments').add({
-        data: { childId: child?._id || '', scores: this.data.scores, result, createdAt: db.serverDate() },
+        data: { childId: child?._id || '', scores: parentScores, childScores: childScores || null, result, createdAt: db.serverDate() },
       })
       wx.setStorageSync('lastAssessmentResult', result)
-      wx.setStorageSync('lastAssessmentScores', this.data.scores)
+      wx.setStorageSync('lastAssessmentScores', parentScores)
       wx.navigateTo({ url: `/pages/result/result?assessmentId=${record._id}` })
     } catch (err) {
       wx.showToast({ title: '评估失败，请重试', icon: 'none' })
