@@ -57,15 +57,15 @@
     <view class="popup-icon">{{currentDimData.icon}}</view>
     <view class="popup-title">{{currentDimData.name}}</view>
 
-    <view class="question-block" wx:for="{{currentDimData.questions}}" wx:key="index">
-      <view class="question-text">{{index + 1}}. {{item.text}}</view>
+    <view class="question-block" wx:for="{{currentDimData.questions}}" wx:for-index="qIdx" wx:for-item="question" wx:key="qIdx">
+      <view class="question-text">{{qIdx + 1}}. {{question.text}}</view>
       <view
-        class="option-btn {{currentAnswers[index] === opt.score ? 'option-btn--selected' : ''}}"
-        wx:for="{{item.options}}"
+        class="option-btn {{currentAnswers[qIdx] === opt.score ? 'option-btn--selected' : ''}}"
+        wx:for="{{question.options}}"
         wx:for-item="opt"
         wx:key="score"
         bindtap="selectOption"
-        data-qindex="{{index}}"
+        data-qindex="{{qIdx}}"
         data-score="{{opt.score}}"
       >{{opt.label}}</view>
     </view>
