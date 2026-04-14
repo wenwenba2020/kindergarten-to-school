@@ -19,4 +19,11 @@ Page({
   showComingSoon() {
     wx.showToast({ title: '开发中，敬请期待', icon: 'none' })
   },
+
+  openWenwenlab() {
+    wx.setClipboardData({
+      data: 'https://wenwenlab.com',
+      success: () => wx.showToast({ title: '网址已复制', icon: 'success' }),
+    })
+  },
 })

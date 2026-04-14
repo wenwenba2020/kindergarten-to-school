@@ -49,6 +49,20 @@
     </van-tab>
 
     <van-tab title="资源">
+      <!-- wenwenlab.com 推荐卡 -->
+      <view class="wenwen-card" bindtap="openWenwenlab">
+        <view class="wenwen-badge">站点推荐</view>
+        <view class="wenwen-row">
+          <view class="wenwen-icon">🌐</view>
+          <view class="wenwen-info">
+            <view class="wenwen-name">wenwenlab.com</view>
+            <view class="wenwen-sub">信息学素养科普平台，面向中国家长</view>
+            <view class="wenwen-quote">「每个孩子都值得被清晰地告知这条路长什么样」</view>
+          </view>
+        </view>
+        <view class="wenwen-action">点击复制网址，浏览器中打开 →</view>
+      </view>
+
       <view class="res-entry" bindtap="showComingSoon">
         <view class="res-entry-icon">🧩</view>
         <view class="res-entry-info">

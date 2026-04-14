@@ -66,4 +66,14 @@
       <text class="step-text">有问题随时咨询</text>
     </view>
   </view>
+
+  <!-- wenwenlab.com 链接卡 -->
+  <view class="wenwen-card" bindtap="openWenwenlab">
+    <view class="wenwen-left">
+      <view class="wenwen-label">出品方</view>
+      <view class="wenwen-site">wenwenlab.com</view>
+      <view class="wenwen-desc">一个面向中国家长的信息学素养科普平台。每个孩子都值得被清晰地告知「这条路长什么样」。</view>
+    </view>
+    <view class="wenwen-arrow">🌐</view>
+  </view>
 </view>
