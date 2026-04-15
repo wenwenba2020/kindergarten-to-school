@@ -10,9 +10,21 @@
 
   <view class="child-info card" wx:if="{{childName}}">
     <text class="child-info-text">🌱 正在评估：{{childName}}，{{childAgeDisplay}}</text>
-    <view style="display:flex;align-items:center;gap:12rpx;flex-shrink:0;">
-      <text wx:if="{{assessRemain !== null}}" class="remain-tag">本月剩余 {{assessRemain}} 次</text>
-      <view class="child-info-edit" bindtap="editChildInfo">修改</view>
+    <view class="child-info-edit" bindtap="editChildInfo">修改</view>
+  </view>
+
+  <!-- 评估额度 banner -->
+  <view class="assess-quota-bar card" wx:if="{{childName && assessRemain !== null}}">
+    <view class="assess-quota-left">
+      <text class="assess-quota-icon">📋</text>
+      <view>
+        <text class="assess-quota-label">本月评估额度</text>
+        <view wx:if="{{assessRemain > 0}}" class="assess-quota-detail">
+          <text class="assess-quota-num">{{assessRemain}}</text>
+          <text class="assess-quota-of"> / {{assessLimit}} 次</text>
+        </view>
+        <text wx:else class="assess-quota-empty">本月已用完，下月自动重置</text>
+      </view>
     </view>
   </view>
 
