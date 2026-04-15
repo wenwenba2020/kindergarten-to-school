@@ -17,7 +17,12 @@
       <view class="menu-name">能力评估</view>
       <view class="menu-desc">评估孩子8个维度发展水平</view>
     </view>
-    <view class="menu-arrow">›</view>
+    <view wx:if="{{assessRemain !== null}}" class="quota-badge {{assessRemain === 0 ? 'quota-badge--empty' : ''}}">
+      <text>剩余</text>
+      <text class="quota-badge-num">{{assessRemain}}</text>
+      <text>次</text>
+    </view>
+    <view wx:else class="menu-arrow">›</view>
   </view>
 
   <!-- 个性化计划卡片（黄） -->
@@ -43,7 +48,12 @@
       <view class="menu-name">问答咨询</view>
       <view class="menu-desc">随时解答入学疑问</view>
     </view>
-    <view class="menu-arrow">›</view>
+    <view wx:if="{{chatRemain !== null}}" class="quota-badge quota-badge--purple {{chatRemain === 0 ? 'quota-badge--empty' : ''}}">
+      <text>剩余</text>
+      <text class="quota-badge-num">{{chatRemain}}</text>
+      <text>次</text>
+    </view>
+    <view wx:else class="menu-arrow">›</view>
   </view>
 
   <!-- 使用步骤 -->

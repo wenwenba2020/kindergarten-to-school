@@ -142,3 +142,33 @@
 .wenwen-site { font-size: 30rpx; font-weight: 700; color: #fff; letter-spacing: 1rpx; margin-bottom: 10rpx; }
 .wenwen-desc { font-size: 22rpx; color: rgba(255,255,255,0.65); line-height: 1.65; }
 .wenwen-arrow { font-size: 44rpx; flex-shrink: 0; }
+
+/* 额度 badge */
+.quota-badge {
+  flex-shrink: 0;
+  background: var(--color-orange-light);
+  border: 2rpx solid var(--color-orange);
+  border-radius: 28rpx;
+  padding: 8rpx 18rpx;
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+  font-size: 22rpx;
+  color: var(--color-orange);
+  font-weight: 600;
+  margin-right: 4rpx;
+}
+.quota-badge--purple {
+  background: var(--color-purple-light);
+  border-color: var(--color-purple);
+  color: var(--color-purple);
+}
+.quota-badge--empty {
+  background: #fce4e4;
+  border-color: #e57373;
+  color: #e57373;
+}
+.quota-badge-num {
+  font-size: 30rpx;
+  font-weight: 800;
+}
