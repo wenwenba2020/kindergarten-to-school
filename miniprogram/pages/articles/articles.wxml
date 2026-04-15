@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="list-header">
+    <text class="list-title">精选文章</text>
+    <text class="list-sub">来源：权威教育媒体 · 内容仅供参考</text>
+  </view>
+
+  <view class="article-card" wx:for="{{articles}}" wx:key="id" bindtap="openArticle" data-url="{{item.url}}" data-title="{{item.title}}">
+    <view class="card-top">
+      <view class="article-tag">{{item.tag}}</view>
+      <text class="article-date">{{item.date}}</text>
+    </view>
+    <view class="article-title">{{item.title}}</view>
+    <view class="article-summary">{{item.summary}}</view>
+    <view class="card-footer">
+      <text class="article-source">来源：{{item.source}}</text>
+      <text class="article-link" wx:if="{{item.url}}">阅读原文 ›</text>
+    </view>
+  </view>
+
+  <view class="disclaimer">
+    <text>以上文章版权归原作者及媒体所有，本平台仅作内容索引，点击可跳转原文阅读。</text>
+  </view>
+</view>

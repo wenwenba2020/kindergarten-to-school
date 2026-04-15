@@ -1,0 +1,89 @@
+<view class="container">
+  <!-- 紧凑标题栏 -->
+  <view class="hero">
+    <view class="hero-title">幼小衔接家长助手</view>
+    <view class="hero-brand">wenwenlab.com 出品</view>
+  </view>
+
+  <view class="section-title">开始探索</view>
+
+  <!-- 能力评估卡片（橙） -->
+  <view class="menu-card" bindtap="goAssessment">
+    <view class="card-accent" style="background:var(--color-orange)"></view>
+    <view class="menu-icon-wrap" style="background:var(--color-orange-light)">
+      <text class="menu-icon-emoji">📋</text>
+    </view>
+    <view class="menu-info">
+      <view class="menu-name">能力评估</view>
+      <view class="menu-desc">评估孩子8个维度发展水平</view>
+    </view>
+    <view wx:if="{{assessRemain !== null}}" class="quota-badge {{assessRemain === 0 ? 'quota-badge--empty' : ''}}">
+      <text>剩余</text>
+      <text class="quota-badge-num">{{assessRemain}}</text>
+      <text>次</text>
+    </view>
+    <view wx:else class="menu-arrow">›</view>
+  </view>
+
+  <!-- 个性化计划卡片（黄） -->
+  <view class="menu-card" bindtap="goPlan">
+    <view class="card-accent" style="background:var(--color-yellow)"></view>
+    <view class="menu-icon-wrap" style="background:var(--color-yellow-light)">
+      <text class="menu-icon-emoji">📅</text>
+    </view>
+    <view class="menu-info">
+      <view class="menu-name">个性化计划</view>
+      <view class="menu-desc">AI 定制幼小衔接方案</view>
+    </view>
+    <view class="menu-arrow">›</view>
+  </view>
+
+  <!-- 问答咨询卡片（紫） -->
+  <view class="menu-card" bindtap="goChat">
+    <view class="card-accent" style="background:var(--color-purple)"></view>
+    <view class="menu-icon-wrap" style="background:var(--color-purple-light)">
+      <text class="menu-icon-emoji">💬</text>
+    </view>
+    <view class="menu-info">
+      <view class="menu-name">问答咨询</view>
+      <view class="menu-desc">随时解答入学疑问</view>
+    </view>
+    <view wx:if="{{chatRemain !== null}}" class="quota-badge quota-badge--purple {{chatRemain === 0 ? 'quota-badge--empty' : ''}}">
+      <text>剩余</text>
+      <text class="quota-badge-num">{{chatRemain}}</text>
+      <text>次</text>
+    </view>
+    <view wx:else class="menu-arrow">›</view>
+  </view>
+
+  <!-- 使用步骤 -->
+  <view class="guide">
+    <view class="guide-title">使用步骤</view>
+    <view class="guide-step">
+      <view class="step-badge">1</view>
+      <text class="step-text">填写孩子基本信息</text>
+    </view>
+    <view class="guide-step">
+      <view class="step-badge">2</view>
+      <text class="step-text">完成 8 项能力评估</text>
+    </view>
+    <view class="guide-step">
+      <view class="step-badge">3</view>
+      <text class="step-text">生成个性化计划</text>
+    </view>
+    <view class="guide-step">
+      <view class="step-badge">4</view>
+      <text class="step-text">有问题随时咨询</text>
+    </view>
+  </view>
+
+  <!-- wenwenlab.com 链接卡 -->
+  <view class="wenwen-card" bindtap="openWenwenlab">
+    <view class="wenwen-left">
+      <view class="wenwen-label">出品方</view>
+      <view class="wenwen-site">wenwenlab.com</view>
+      <view class="wenwen-desc">一个面向中国家长的信息学素养科普平台。每个孩子都值得被清晰地告知「这条路长什么样」。</view>
+    </view>
+    <view class="wenwen-arrow">🌐</view>
+  </view>
+</view>

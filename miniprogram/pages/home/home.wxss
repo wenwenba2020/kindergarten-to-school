@@ -1,0 +1,174 @@
+/* pages/home/home.wxss */
+.container {
+  padding: 0 0 140rpx;
+}
+
+/* 紧凑标题栏 */
+.hero {
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+  padding: 40rpx 40rpx;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 2rpx;
+}
+
+.hero-brand {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 8rpx;
+  letter-spacing: 1rpx;
+}
+
+/* 区块标题 */
+.section-title {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: var(--color-text-sub);
+  padding: 36rpx 32rpx 16rpx;
+  text-transform: uppercase;
+  letter-spacing: 3rpx;
+}
+
+/* 功能卡片 */
+.menu-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  margin: 0 24rpx 20rpx;
+  border-radius: var(--radius-card);
+  padding: 28rpx 24rpx 28rpx 0;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* 左侧彩色竖条 */
+.card-accent {
+  width: 8rpx;
+  height: 80rpx;
+  border-radius: 0 4rpx 4rpx 0;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+/* icon 圆形色块 */
+.menu-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.menu-icon-emoji {
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+.menu-info {
+  flex: 1;
+}
+
+.menu-name {
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-bottom: 6rpx;
+  color: var(--color-text);
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: var(--color-text-sub);
+}
+
+.menu-arrow {
+  font-size: 44rpx;
+  color: #ccc;
+  line-height: 1;
+}
+
+/* 使用步骤 */
+.guide {
+  margin: 8rpx 24rpx 0;
+  border-radius: var(--radius-card);
+  padding: 32rpx 28rpx;
+  background: #FFF9E6;
+}
+
+.guide-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--color-orange);
+  margin-bottom: 20rpx;
+}
+
+.guide-step {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 0;
+}
+
+.step-badge {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--color-orange);
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 26rpx;
+  color: var(--color-text);
+}
+
+/* wenwenlab 链接卡 */
+.wenwen-card { display: flex; align-items: center; gap: 20rpx; margin: 20rpx 24rpx 0; background: linear-gradient(135deg, #0f1923 0%, #1a2f45 100%); border-radius: var(--radius-card); padding: 32rpx 28rpx; }
+.wenwen-left { flex: 1; }
+.wenwen-label { font-size: 20rpx; color: rgba(255,255,255,0.45); letter-spacing: 2rpx; margin-bottom: 8rpx; }
+.wenwen-site { font-size: 30rpx; font-weight: 700; color: #fff; letter-spacing: 1rpx; margin-bottom: 10rpx; }
+.wenwen-desc { font-size: 22rpx; color: rgba(255,255,255,0.65); line-height: 1.65; }
+.wenwen-arrow { font-size: 44rpx; flex-shrink: 0; }
+
+/* 额度 badge */
+.quota-badge {
+  flex-shrink: 0;
+  background: var(--color-orange-light);
+  border: 2rpx solid var(--color-orange);
+  border-radius: 28rpx;
+  padding: 8rpx 18rpx;
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+  font-size: 22rpx;
+  color: var(--color-orange);
+  font-weight: 600;
+  margin-right: 4rpx;
+}
+.quota-badge--purple {
+  background: var(--color-purple-light);
+  border-color: var(--color-purple);
+  color: var(--color-purple);
+}
+.quota-badge--empty {
+  background: #fce4e4;
+  border-color: #e57373;
+  color: #e57373;
+}
+.quota-badge-num {
+  font-size: 30rpx;
+  font-weight: 800;
+}

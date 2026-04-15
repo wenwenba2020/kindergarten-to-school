@@ -1,0 +1,46 @@
+.container { padding-bottom: 160rpx; }
+.progress-bar { padding: 24rpx 32rpx 16rpx; background: #fff; }
+.progress-label { font-size: 26rpx; color: var(--color-text-sub); margin-bottom: 12rpx; }
+.progress-track { height: 8rpx; background: var(--color-primary-mid); border-radius: 4rpx; }
+.progress-fill { height: 8rpx; background: var(--color-primary); border-radius: 4rpx; transition: width 0.3s; }
+.child-info { margin: 16rpx 24rpx 0; padding: 20rpx 24rpx; font-size: 28rpx; color: var(--color-primary-dark); display: flex; align-items: center; justify-content: space-between; }
+.child-info-text { flex: 1; }
+.child-info-edit { font-size: 26rpx; color: var(--color-primary); padding: 6rpx 16rpx; border: 1rpx solid var(--color-primary); border-radius: 24rpx; flex-shrink: 0; }
+
+/* 评估额度 banner */
+.assess-quota-bar { margin: 12rpx 24rpx 0; padding: 20rpx 24rpx; }
+.assess-quota-left { display: flex; align-items: center; gap: 16rpx; }
+.assess-quota-icon { font-size: 36rpx; flex-shrink: 0; }
+.assess-quota-label { font-size: 24rpx; color: var(--color-text-sub); display: block; margin-bottom: 4rpx; }
+.assess-quota-detail { display: flex; align-items: baseline; gap: 4rpx; }
+.assess-quota-num { color: var(--color-orange); font-weight: 800; font-size: 40rpx; line-height: 1; }
+.assess-quota-of { font-size: 26rpx; color: var(--color-text-sub); }
+.assess-quota-empty { font-size: 26rpx; color: #e57373; }
+
+.dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20rpx; padding: 20rpx 24rpx; }
+.dim-card { background: #fff; border-radius: 20rpx; padding: 32rpx 20rpx; text-align: center; border: 3rpx solid var(--color-border); position: relative; transition: all 0.2s; }
+.dim-card--done { border-color: var(--color-primary); background: var(--color-primary-light); }
+.dim-card--locked { opacity: 0.38; }
+.dim-card--active-next { border-color: var(--color-primary-mid); box-shadow: 0 0 0 3rpx rgba(82,196,26,.25); }
+.dim-check { position: absolute; top: 12rpx; right: 16rpx; font-size: 24rpx; }
+.dim-lock { position: absolute; top: 12rpx; right: 16rpx; font-size: 22rpx; }
+.dim-icon { font-size: 56rpx; margin-bottom: 12rpx; }
+.dim-name { font-size: 28rpx; font-weight: 600; margin-bottom: 8rpx; }
+.dim-score { font-size: 24rpx; color: var(--color-primary); }
+.dim-score--pending { color: var(--color-text-sub); }
+.dim-score--locked { color: var(--color-border); font-size: 22rpx; }
+
+/* Phase badge */
+.phase-badge { margin: 12rpx 24rpx 0; padding: 20rpx 24rpx; }
+.phase-badge-text { font-size: 28rpx; font-weight: 600; color: var(--color-primary-dark); }
+.phase-badge-text--child { color: #722ed1; }
+
+/* Popup mode tag */
+.popup-mode-tag { text-align: center; font-size: 24rpx; color: var(--color-primary-dark); background: var(--color-primary-light); border-radius: 24rpx; padding: 8rpx 24rpx; display: inline-block; margin: 0 auto 24rpx; width: fit-content; }
+.bottom-btn { position: fixed; bottom: 0; left: 0; right: 0; padding: 24rpx 32rpx 48rpx; background: #fff; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,.06); }
+.popup-icon { font-size: 72rpx; text-align: center; margin-bottom: 16rpx; }
+.popup-title { font-size: 36rpx; font-weight: 700; text-align: center; margin-bottom: 24rpx; }
+.question-block { margin-bottom: 32rpx; }
+.question-text { font-size: 30rpx; color: var(--color-text); line-height: 1.7; margin-bottom: 16rpx; font-weight: 500; }
+.option-btn { display: block; padding: 24rpx 24rpx; border: 2rpx solid var(--color-border); border-radius: 16rpx; font-size: 30rpx; color: var(--color-text); margin-bottom: 12rpx; background: #fff; line-height: 1.6; }
+.option-btn--selected { border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary-dark); }

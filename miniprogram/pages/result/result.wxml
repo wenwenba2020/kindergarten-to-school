@@ -1,0 +1,70 @@
+<view wx:if="{{!result}}" class="empty-state">
+  <view style="text-align:center; padding: 80rpx 40rpx; color: #888;">
+    <view style="font-size: 80rpx; margin-bottom: 24rpx;">📊</view>
+    <view style="font-size: 28rpx;">暂无评估结果</view>
+    <view style="font-size: 24rpx; margin-top: 8rpx;">请先完成能力评估</view>
+  </view>
+</view>
+
+<view wx:else class="container">
+  <view class="level-card card">
+    <view class="level-emoji">{{levelEmoji}}</view>
+    <view class="level-text">{{result.overall_level}}</view>
+    <view class="level-sub">综合评估结果</view>
+  </view>
+
+  <view class="section card" wx:if="{{result.strengths.length > 0}}">
+    <view class="section-head">💪 孩子的优势</view>
+    <view class="tag-wrap">
+      <van-tag
+        wx:for="{{result.strengths}}"
+        wx:key="*this"
+        type="success"
+        custom-style="margin: 6rpx 8rpx; font-size: 24rpx; padding: 6rpx 16rpx;"
+      >{{item}}</van-tag>
+    </view>
+  </view>
+
+  <view class="section card" wx:if="{{result.areas_to_improve.length > 0}}">
+    <view class="section-head">🌱 可以加强的方向</view>
+    <view class="improve-item" wx:for="{{result.areas_to_improve}}" wx:key="*this">
+      <text class="dot">·</text><text>{{item}}</text>
+    </view>
+  </view>
+
+  <view class="section card" wx:if="{{result.recommendations.length > 0}}">
+    <view class="section-head">💡 具体建议</view>
+    <view class="rec-item" wx:for="{{result.recommendations}}" wx:key="*this">
+      <text class="rec-num">{{index+1}}</text>
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 家长与孩子对比分析 -->
+  <view class="section card" wx:if="{{result.hasChildAssessment && result.childComparison.length > 0}}">
+    <view class="section-head">🔍 家长与孩子认知对比</view>
+    <view class="cmp-intro">以下维度存在明显差异，建议重点关注：</view>
+    <view class="cmp-item" wx:for="{{result.childComparison}}" wx:key="dimension">
+      <view class="cmp-dim">{{item.dimension}}</view>
+      <view class="cmp-scores">
+        <view class="cmp-score-tag cmp-score-tag--parent">家长 {{item.parentScore}}分</view>
+        <view class="cmp-arrow">→</view>
+        <view class="cmp-score-tag cmp-score-tag--child">孩子 {{item.childScore}}分</view>
+      </view>
+      <view class="cmp-note">{{item.note}}</view>
+    </view>
+  </view>
+  <view class="section card cmp-all-ok" wx:elif="{{result.hasChildAssessment && result.childComparison.length === 0}}">
+    <view class="section-head">🔍 家长与孩子认知对比</view>
+    <view class="cmp-intro">家长与孩子的评估结果高度一致，说明双方对孩子能力的认知较为统一 👍</view>
+  </view>
+
+  <view class="btn-group">
+    <van-button type="primary" block round bindclick="generatePlan" loading="{{loading}}">
+      生成个性化计划 →
+    </van-button>
+    <van-button plain type="primary" block round custom-style="margin-top: 16rpx;" bindclick="goBack">
+      重新评估
+    </van-button>
+  </view>
+</view>

@@ -1,0 +1,93 @@
+<!-- 未评估引导卡 -->
+<view wx:if="{{!hasAssessment}}" class="gate-card">
+  <text class="gate-icon">📋</text>
+  <text class="gate-title">请先完成能力评估</text>
+  <text class="gate-desc">完成评估后，系统将根据孩子的具体情况生成个性化计划</text>
+  <view class="gate-btn" bindtap="goAssessment">去评估</view>
+</view>
+
+<!-- 有评估但尚未生成计划 -->
+<view wx:elif="{{!plan}}" class="empty">
+  <view class="empty-icon">📅</view>
+  <view class="empty-text">还没有计划</view>
+  <view class="empty-sub">去结果页生成你的个性化计划</view>
+  <van-button type="primary" round custom-style="margin-top: 32rpx; width: 300rpx;" bindclick="goAssessment">
+    去评估
+  </van-button>
+</view>
+
+<view wx:else class="container">
+  <van-tabs active="{{activeTab}}" bind:change="onTabChange" color="#52C41A" title-active-color="#52C41A">
+    <van-tab title="计划">
+      <view class="timeline">
+        <view
+          class="tl-item {{index < currentWeek ? 'tl-item--done' : ''}} {{index === currentWeek - 1 ? 'tl-item--current' : ''}}"
+          wx:for="{{plan.weekly_goals}}"
+          wx:key="index"
+          bindtap="toggleWeek"
+          data-index="{{index}}"
+        >
+          <view class="tl-line-wrap">
+            <view class="tl-dot"></view>
+            <view class="tl-line" wx:if="{{index < plan.weekly_goals.length - 1}}"></view>
+          </view>
+          <view class="tl-content">
+            <view class="tl-week">第 {{index + 1}} 周</view>
+            <view class="tl-goal">{{item}}</view>
+            <view class="tl-activities" wx:if="{{expandedWeek === index}}">
+              <view class="activity-item" wx:for="{{plan.daily_activities}}" wx:for-item="act" wx:key="time">
+                <view class="act-time">{{act.time}}</view>
+                <view class="act-detail">
+                  <view class="act-name">{{act.activity}}</view>
+                  <view class="act-goal">目标：{{act.goal}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-tab>
+
+    <van-tab title="资源">
+      <!-- wenwenlab.com 推荐卡 -->
+      <view class="wenwen-card" bindtap="openWenwenlab">
+        <view class="wenwen-badge">站点推荐</view>
+        <view class="wenwen-row">
+          <view class="wenwen-icon">🌐</view>
+          <view class="wenwen-info">
+            <view class="wenwen-name">wenwenlab.com</view>
+            <view class="wenwen-sub">信息学素养科普平台，面向中国家长</view>
+            <view class="wenwen-quote">「每个孩子都值得被清晰地告知这条路长什么样」</view>
+          </view>
+        </view>
+        <view class="wenwen-action">点击复制网址，浏览器中打开 →</view>
+      </view>
+
+      <view class="res-entry" bindtap="showComingSoon">
+        <view class="res-entry-icon">🧩</view>
+        <view class="res-entry-info">
+          <view class="res-entry-title">计算思维入门</view>
+          <view class="res-entry-sub">培养逻辑推理与问题解决能力</view>
+        </view>
+        <view class="res-entry-tag">即将上线</view>
+      </view>
+      <view class="res-entry" bindtap="showComingSoon">
+        <view class="res-entry-icon">💡</view>
+        <view class="res-entry-info">
+          <view class="res-entry-title">信息学入门</view>
+          <view class="res-entry-sub">适龄编程思维启蒙课程</view>
+        </view>
+        <view class="res-entry-tag">即将上线</view>
+      </view>
+    </van-tab>
+
+    <van-tab title="家长贴士">
+      <view class="tips-list">
+        <view class="tip-item" wx:for="{{plan.parent_tips}}" wx:key="*this">
+          <text class="tip-num">{{index + 1}}</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </van-tab>
+  </van-tabs>
+</view>

@@ -1,0 +1,62 @@
+<view class="container">
+  <!-- Gate card when no assessment -->
+  <view wx:if="{{!hasAssessment}}" class="gate-card">
+    <text class="gate-icon">📋</text>
+    <text class="gate-title">请先完成能力评估</text>
+    <text class="gate-desc">完成评估后，问答将根据孩子的具体情况给出个性化建议</text>
+    <view class="gate-btn" bindtap="goAssessment">去评估</view>
+  </view>
+
+  <!-- Normal chat UI when assessment exists -->
+  <block wx:else>
+    <!-- 限额提示 -->
+    <view class="quota-bar">
+      <view class="quota-bar-left">
+        <text class="quota-icon">💬</text>
+        <view>
+          <text class="quota-label">本月问答额度</text>
+          <view wx:if="{{remain > 0}}" class="quota-detail">
+            <text class="quota-num">{{remain}}</text>
+            <text class="quota-of"> / 5 次</text>
+          </view>
+          <text class="quota-detail quota-text--empty" wx:else>已用完，下月自动重置</text>
+        </view>
+      </view>
+    </view>
+
+    <scroll-view scroll-x class="faq-scroll">
+      <view class="faq-wrap">
+        <view class="faq-tag" wx:for="{{faqs}}" wx:key="*this" bindtap="sendFaq" data-msg="{{item}}">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <scroll-view scroll-y class="chat-scroll" scroll-into-view="{{scrollToId}}">
+      <view class="chat-list">
+        <view
+          class="bubble-wrap {{item.role === 'user' ? 'bubble-wrap--user' : 'bubble-wrap--ai'}}"
+          wx:for="{{messages}}"
+          wx:key="id"
+          id="msg-{{item.id}}"
+        >
+          <view class="avatar" wx:if="{{item.role === 'ai'}}">🌱</view>
+          <view class="bubble {{item.role === 'user' ? 'bubble--user' : 'bubble--ai'}}">{{item.content}}</view>
+          <view class="avatar-user" wx:if="{{item.role === 'user'}}">👤</view>
+        </view>
+
+        <view class="bubble-wrap bubble-wrap--ai" wx:if="{{thinking}}">
+          <view class="avatar">🌱</view>
+          <view class="bubble bubble--ai bubble--thinking">
+            <van-loading size="20px" color="#52C41A" /> 小苗正在思考...
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="disclaimer-bar">⚠️ 回答由 AI 生成，仅供参考，不构成专业教育或医疗建议，请结合实际情况判断</view>
+
+    <view class="input-bar">
+      <van-field value="{{inputMsg}}" bind:input="onInput" placeholder="输入问题..." custom-class="input-field" />
+      <van-button type="primary" round size="small" bindclick="sendMessage" disabled="{{!inputMsg || thinking || remain <= 0}}">发送</van-button>
+    </view>
+  </block>
+</view>
