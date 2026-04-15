@@ -95,7 +95,7 @@ Page({
       this.setData({ messages: [...this.data.messages, aiMsg], msgCounter: newCounter + 1, scrollToId: `msg-${aiMsg.id}`, remain })
     } catch (err) {
       const aiMsg = { id: newCounter, role: 'ai', content: '网络异常，请检查连接后重试。' }
-      // 云函数已在服务端消耗 slot，本地同步扣减
+      // 服务端可能已消耗 slot，乐观扣减；下次 loadQuota 会以服务端值为准
       const remain = Math.max(0, this.data.remain - 1)
       this.setData({ messages: [...this.data.messages, aiMsg], remain })
     } finally {
