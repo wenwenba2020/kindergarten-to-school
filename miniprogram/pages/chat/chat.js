@@ -45,7 +45,7 @@ Page({
       const remain = res.result?.data?.remain ?? 5
       this.setData({ remain })
     } catch {
-      this.setData({ remain: 5 })
+      // 网络失败时保持现有显示值，不重置
     }
   },
 
