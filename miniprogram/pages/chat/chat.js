@@ -51,6 +51,7 @@ Page({
 
   onShow() {
     this.refreshContext()
+    this.loadQuota()
   },
 
   refreshContext() {
@@ -94,7 +95,9 @@ Page({
       this.setData({ messages: [...this.data.messages, aiMsg], msgCounter: newCounter + 1, scrollToId: `msg-${aiMsg.id}`, remain })
     } catch (err) {
       const aiMsg = { id: newCounter, role: 'ai', content: '网络异常，请检查连接后重试。' }
-      this.setData({ messages: [...this.data.messages, aiMsg] })
+      // 云函数已在服务端消耗 slot，本地同步扣减
+      const remain = Math.max(0, this.data.remain - 1)
+      this.setData({ messages: [...this.data.messages, aiMsg], remain })
     } finally {
       this.setData({ thinking: false })
     }
