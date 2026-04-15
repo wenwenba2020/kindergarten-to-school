@@ -11,9 +11,17 @@
   <block wx:else>
     <!-- 限额提示 -->
     <view class="quota-bar">
-      <text class="quota-icon">💬</text>
-      <text class="quota-text" wx:if="{{remain > 0}}">本月还可提问 <text class="quota-num">{{remain}}</text> 次</text>
-      <text class="quota-text quota-text--empty" wx:else>本月提问次数已用完，下月自动重置</text>
+      <view class="quota-bar-left">
+        <text class="quota-icon">💬</text>
+        <view>
+          <text class="quota-label">本月问答额度</text>
+          <view wx:if="{{remain > 0}}" class="quota-detail">
+            <text class="quota-num">{{remain}}</text>
+            <text class="quota-of"> / 5 次</text>
+          </view>
+          <text class="quota-detail quota-text--empty" wx:else>已用完，下月自动重置</text>
+        </view>
+      </view>
     </view>
 
     <scroll-view scroll-x class="faq-scroll">
